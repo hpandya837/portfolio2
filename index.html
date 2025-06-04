@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hardav - Portfolio</title>
+    <!-- Link to Google Fonts for Inter -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+    <link href="style.css" rel="stylesheet">
+    <style>
+        
+    </style>
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">
+                HP
+            </div>
+            <ul>
+                <li><a href="about.html">About</a></li>
+                <li><a href="#posts">Posts</a></li>
+                <li><a href="#gallery">Gallery</a></li>
+                <li><a href="#uses">Uses</a></li>
+                <li><a href="#work">Work</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="hero">
+            <div class="hero-main-title">
+                <h1>TURNING<br>IDEAS INTO<br>REALITY</h1>
+            </div>
+            <div class="hero-intro">
+                <h2>HI! I'M HARDAV, <br>I LOVE MAKING THINGS<br>THAT HELP PEOPLE DO<br>THEIR THING.</h2>
+                <div class="hero-intro-details">
+                    <p>I'm a senior frontend engineer based from New Jersey, specializing in building pixel-perfect, engaging, and accessible digital experiences.</p>
+                    <p>As a passionate engineer and also a total nerd, I enjoy building software in the sweet spot where design, problem-solving, and engineering meet -- creating things that not only look good but are also easy to use and well-built under the hood.</p>
+                    <a href="#about-me" class="cta-link">MORE ABOUT ME &rarr;</a>
+                </div>
+            </div>
+        </section>
+
+        <section id="possibilities">
+            <h2>ONE UNIVERSE. INFINITE POSSIBILITIES.</h2>
+            <div class="tech-stack">
+                <span class="tech-icon" data-skill="javascript">JavaScript</span>
+                <span class="tech-icon" data-skill="java">Java</span>
+                <span class="tech-icon" data-skill="html">HTML</span>
+                <span class="tech-icon" data-skill="css">CSS</span>
+            </div>
+            <p id="skill-description">Click on a skill above to learn more about my proficiency in it!</p>
+        </section>
+
+        <section id="current-focus">
+            <div class="focus-text">
+                <h2>BUILDING THE FUTURE<br>OF AI SPEECH AT<br>SPEECHIFY.</h2>
+            </div>
+            <div class="focus-details">
+                <p>Currently, I'm focused on crafting the best AI speech experience at Speechify with the Web & Monetization team.</p>
+                <p>Previously, I've had the privilege of working with a B2B enterprise SaaS and a geospatial data intelligence company on a GIS tool. Additionally, I have collaborated with several freelance clients to overhaul their marketing sites and core products.</p>
+                <p class="companies-worked-with-label">COMPANIES I'VE WORKED WITH</p>
+                <div class="company-logos">
+                    <span>Speechify</span>
+                    <span>Procol</span>
+                    <span>Blue Sky Analytics</span>
+                    <span>AskPython</span>
+                </div>
+            </div>
+        </section>
+
+        <section id="work">
+            <h2>WORK</h2>
+            <div class="projects-grid">
+                <div class="project-card">
+                    <h3>Speechify</h3>
+                    <p>Helping Speechify reach millions of users across the globe. Involved in everything related to Top of Funnel (TOFU). The website created using Next.js and powered by a headless CMS with complete support for internationalization & AI Translations. It also acts as a playground for the users to try out what Speechify can do.</p>
+                    <div class="project-tags">
+                        <span>Next.JS</span>
+                        <span>Tailwind</span>
+                        <span>Payload CMS</span>
+                        <span>GraphQL</span>
+                        <span>i18n</span>
+                        <span>AI Translations</span>
+                    </div>
+                    <div class="project-preview">
+                        <img src="https://placehold.co/400x250/333333/FFFFFF?text=Speechify+Preview" alt="Speechify project preview">
+                    </div>
+                </div>
+                <div class="project-card">
+                    <h3>Procol</h3>
+                    <p>In addition to contributing to Procol's core product development, I led the development of Procol's marketing website from scratch. The website is statically generated using Gatsby and seamlessly integrated with a headless content management system, which empowers content owners to effortlessly update website content independently.</p>
+                     <div class="project-tags">
+                        <span>Gatsby</span>
+                        <span>React</span>
+                        <span>SCSS</span>
+                        <span>Contentful CMS</span>
+                        <span>GraphQL</span>
+                    </div>
+                    <div class="project-preview">
+                        <img src="https://placehold.co/400x250/333333/FFFFFF?text=Procol+Preview" alt="Procol project preview">
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section id="gallery">
+            <h2>MEMORY LANE GAME</h2>
+            <a href="#" class="view-gallery-link">View Gallery &rarr;</a>
+            <div class="memory-game-grid">
+                <div class="game-card">?</div>
+                <div class="game-card">?</div>
+                <div class="game-card">?</div>
+                <div class="game-card">?</div>
+                <div class="game-card">?</div>
+                <div class="game-card">?</div>
+                <div class="game-card">?</div>
+                <div class="game-card">?</div>
+                </div>
+        </section>
+
+        <section id="contact">
+            <h2>GET IN TOUCH</h2>
+            <form id="contact-form">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="email" required>
+
+                <label for="subject">Subject:</label>
+                <input type="text" id="subject" name="subject">
+
+                <label for="message">Message:</label>
+                <textarea id="message" name="message" required></textarea>
+
+                <button type="submit">Send Message</button>
+            </form>
+            <p id="contact-message">Thank you for your message! I'll get back to you soon.</p>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; <span id="current-year"></span> Hardav. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js">
+        
+    </script>
+</body>
+</html>

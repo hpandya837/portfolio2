@@ -1,0 +1,491 @@
+/* Basic Reset & General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif; /* Changed to Inter */
+    background-color: #121212; /* Dark background from images */
+    color: #ffffff; /* White text */
+    line-height: 1.6;
+}
+
+h1, h2, h3 {
+    font-weight: bold; /* As seen in images, very bold headings */
+    text-transform: uppercase;
+}
+
+h1 {
+    font-size: 4rem; /* Adjust as needed */
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: 2.5rem; /* Adjust as needed */
+    margin-bottom: 20px;
+}
+
+p {
+    font-size: 1rem;
+    color: #cccccc; /* Slightly off-white for paragraphs */
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+section {
+    padding: 60px 20px; /* General padding for sections */
+    max-width: 1200px; /* Max width for content */
+    margin: 0 auto; /* Center content */
+}
+
+/* Header & Navigation */
+header {
+    position: fixed; /* Or sticky */
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 50px;
+    background-color: rgba(18, 18, 18, 0.8); /* Slight transparency */
+    backdrop-filter: blur(5px); /* Frosted glass effect */
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    font-weight: 500;
+    font-size: 0.9rem;
+}
+
+header nav ul li a:hover {
+    color: #bbbbbb; /* Hover effect */
+}
+
+
+/* Hero Section */
+#hero {
+    min-height: 100vh; /* Full viewport height */
+    display: flex;
+    flex-direction: column; /* Stack main title and intro */
+    justify-content: center; /* Vertically center content */
+    align-items: flex-start; /* Align text to the left */
+    padding-top: 100px; /* Account for fixed header */
+}
+
+#hero .hero-main-title h1 {
+    margin-bottom: 50px; /* Space between title and intro block */
+}
+
+#hero .hero-intro {
+    display: flex;
+    gap: 30px; /* Space between "HI! I'M RAHUL..." and the paragraph block */
+    align-items: flex-start; /* Align items at the top */
+}
+
+#hero .hero-intro h2 {
+    font-size: 2rem; /* Adjust as needed */
+    line-height: 1.3;
+    flex-basis: 40%; /* Give it some defined width */
+}
+
+#hero .hero-intro-details {
+    flex-basis: 55%; /* Remaining width */
+}
+
+#hero .hero-intro-details p {
+    margin-bottom: 15px;
+}
+
+.cta-link {
+    display: inline-block;
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+
+/* Possibilities / Tech Stack Section */
+#possibilities {
+    text-align: center;
+}
+
+#possibilities h2 {
+    margin-bottom: 40px;
+}
+
+.tech-stack {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Space between icons */
+    margin-bottom: 30px;
+}
+
+.tech-icon {
+    font-size: 2rem; /* Placeholder size, adjust for actual icons */
+    padding: 15px;
+    border-radius: 50%; /* Circular background */
+    background-color: #2a2a2a; /* Darker gray for icons */
+    min-width: 60px; /* Ensure consistent size */
+    min-height: 60px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer; /* Indicate clickable */
+    border: 2px solid transparent; /* Added for hover effect */
+    transition: background-color 0.3s, transform 0.2s, border-color 0.3s; /* Added border-color transition */
+}
+
+.tech-icon:hover {
+    transform: translateY(-3px); /* Slight lift on hover */
+    border-color: #f0db4f; /* Yellow outline on hover */
+}
+
+.tech-icon.main-tech {
+    background-color: #f0db4f; /* JS yellow for emphasis */
+    color: #323330;
+    font-size: 2.5rem;
+    padding: 20px;
+    min-width: 80px;
+    min-height: 80px;
+    /* Add subtle shadow or glow effect as in image */
+    box-shadow: 0 0 15px rgba(240, 219, 79, 0.5);
+}
+
+/* Active skill styling */
+.tech-icon.active {
+    background-color: #f0db4f; /* Yellow background when active */
+    color: #323330; /* Dark text for readability on yellow background */
+    border: 2px solid #f0db4f; /* Ensure outline matches background when active */
+    box-shadow: 0 0 20px rgba(240, 219, 79, 0.8);
+    transform: scale(1.05);
+}
+
+#skill-description {
+    max-width: 700px;
+    margin: 0 auto;
+    color: #cccccc;
+    min-height: 60px; /* To prevent layout shifts when text changes */
+    transition: opacity 0.3s ease-in-out;
+}
+
+
+/* Current Focus Section */
+#current-focus {
+    display: flex;
+    gap: 40px; /* Space between the large text and details */
+    align-items: center; /* Vertically align items */
+}
+
+#current-focus .focus-text {
+    flex-basis: 50%;
+}
+
+#current-focus .focus-text h2 {
+    font-size: 3rem; /* Large text */
+    line-height: 1.2;
+}
+
+#current-focus .focus-details {
+    flex-basis: 50%;
+}
+
+#current-focus .focus-details p {
+    margin-bottom: 15px;
+}
+
+.companies-worked-with-label {
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #888888;
+    margin-top: 20px;
+    margin-bottom: 10px;
+}
+
+.company-logos {
+    display: flex;
+    gap: 15px; /* Space between company names/logos */
+    flex-wrap: wrap; /* Allow wrapping if many logos */
+}
+
+.company-logos span { /* Replace with <img> if using actual logos */
+    font-weight: bold;
+    color: #aaaaaa;
+}
+
+
+/* Work Section */
+#work h2 {
+    text-align: center; /* As seen in "WORK" title */
+    margin-bottom: 40px;
+}
+
+.projects-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Responsive grid */
+    gap: 30px;
+}
+
+.project-card {
+    background-color: #1e1e1e; /* Slightly lighter than main bg */
+    padding: 25px;
+    border-radius: 8px;
+    /* Add subtle border or shadow if desired */
+}
+
+.project-card h3 {
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+}
+
+.project-card p {
+    font-size: 0.9rem;
+    margin-bottom: 15px;
+    color: #bbbbbb;
+}
+
+.project-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.project-tags span {
+    background-color: #333333;
+    color: #dddddd;
+    padding: 5px 10px;
+    border-radius: 4px;
+    font-size: 0.8rem;
+}
+
+.project-preview img {
+    border-radius: 4px;
+    /* Add styling for the preview images if needed */
+}
+
+
+/* Gallery / Memory Game Section */
+#gallery {
+    text-align: center;
+}
+
+#gallery h2 {
+    margin-bottom: 10px;
+}
+
+.view-gallery-link {
+    display: inline-block;
+    margin-bottom: 30px;
+    color: #aaaaaa;
+    font-size: 0.9rem;
+}
+
+.memory-game-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust card size */
+    gap: 15px;
+    max-width: 600px; /* Adjust as needed */
+    margin: 0 auto;
+}
+
+.game-card {
+    background-color: #2a2a2a;
+    height: 100px; /* Or use aspect-ratio */
+    border-radius: 8px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 2.5rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.3s;
+}
+
+.game-card:hover {
+    background-color: #333333;
+}
+
+/* Example: revealed card style (you'll toggle this with JS) */
+.game-card.revealed {
+    background-color: #4CAF50; /* Or show an image */
+    color: white;
+    transform: rotateY(180deg); /* Flip effect */
+}
+
+/* Contact Section */
+#contact {
+    text-align: center;
+    padding-bottom: 80px; /* More space at the bottom */
+}
+
+#contact h2 {
+    margin-bottom: 40px;
+}
+
+#contact form {
+    max-width: 600px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 30px;
+    background-color: #1e1e1e;
+    border-radius: 8px;
+}
+
+#contact form label {
+    text-align: left;
+    font-size: 0.9rem;
+    color: #cccccc;
+    margin-bottom: 5px;
+    display: block; /* Ensures label is on its own line */
+}
+
+#contact form input[type="text"],
+#contact form input[type="email"],
+#contact form textarea {
+    width: 100%;
+    padding: 12px;
+    background-color: #2a2a2a;
+    border: 1px solid #333333;
+    border-radius: 4px;
+    color: #ffffff;
+    font-size: 1rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+#contact form input[type="text"]:focus,
+#contact form input[type="email"]:focus,
+#contact form textarea:focus {
+    border-color: #f0db4f; /* Highlight on focus */
+}
+
+#contact form textarea {
+    resize: vertical; /* Allow vertical resizing */
+    min-height: 120px;
+}
+
+#contact form button {
+    background-color: #f0db4f;
+    color: #323330;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    margin-top: 10px;
+}
+
+#contact form button:hover {
+    background-color: #e0cc3d;
+    transform: translateY(-2px);
+}
+
+#contact-message {
+    margin-top: 20px;
+    font-size: 1rem;
+    color: #4CAF50; /* Green for success */
+    display: none; /* Hidden by default */
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 30px 20px;
+    border-top: 1px solid #2a2a2a; /* Subtle separator */
+    font-size: 0.9rem;
+    color: #888888;
+}
+
+
+/* --- Responsiveness --- */
+/* Example Media Queries */
+@media (max-width: 992px) {
+    #hero .hero-intro {
+        flex-direction: column; /* Stack elements on smaller screens */
+    }
+    #current-focus {
+        flex-direction: column;
+        text-align: center;
+    }
+    #current-focus .focus-text h2, #hero .hero-intro h2 {
+        text-align: center;
+        margin-bottom: 20px;
+    }
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2rem; }
+
+    header {
+        padding: 15px 20px;
+    }
+    header nav ul {
+        /* Consider a hamburger menu for mobile */
+        display: none; /* Simplistic: hide for now, implement hamburger later */
+    }
+    .projects-grid {
+        grid-template-columns: 1fr; /* Stack project cards */
+    }
+    .memory-game-grid {
+        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+    }
+    .game-card {
+        height: 80px;
+        font-size: 2rem;
+    }
+    #contact form {
+        padding: 20px;
+    }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.8rem; }
+    section { padding: 40px 15px; }
+
+    .tech-icon {
+        font-size: 1.5rem;
+        padding: 10px;
+        min-width: 50px;
+        min-height: 50px;
+    }
+    .tech-icon.main-tech {
+        font-size: 2rem;
+        padding: 15px;
+        min-width: 70px;
+        min-height: 70px;
+    }
+}
