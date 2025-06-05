@@ -1,0 +1,524 @@
+.nav {
+    width: 100%;
+    height: 65px;
+    position: fixed;
+    line-height: 65px;
+    text-align: center;
+    top: 0;
+    left: 0;
+    z-index: 1000;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    transition: all 0.4s ease;
+    background-color: rgba(18, 18, 18, 0.8); /* Match old header background */
+    backdrop-filter: blur(5px);
+}
+
+.nav .container {
+    max-width: 1200px; /* Align with general section width */
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    height: 100%; /* Ensure content inside aligns vertically */
+    padding: 0 20px; /* Padding for container */
+}
+
+.nav .logo {
+    float: left;
+    width: auto;
+    height: auto;
+    padding-left: 0; /* Adjusted for container padding */
+}
+
+.nav .logo a {
+    text-decoration: none;
+    color: var(--accent-color); /* Kept blue as per previous request */
+    font-size: 2.5rem; /* Increased size */
+    font-family: 'Orbitron', sans-serif; /* Applied Orbitron font */
+    font-weight: bold;
+}
+
+.nav .logo a:hover {
+    color: var(--accent-color); /* Keep it blue on hover */
+}
+
+.nav .main_list {
+    height: 65px;
+    float: right;
+}
+
+.nav .main_list ul {
+    width: 100%;
+    height: 65px;
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+}
+
+.nav .main_list ul li {
+    width: auto;
+    height: 65px;
+    padding: 0;
+    padding-right: 3rem;
+}
+
+.nav .main_list ul li a {
+    text-decoration: none;
+    color: #fff;
+    line-height: 65px;
+    font-size: 1.1rem; /* Adjusted for readability */
+    font-family: 'Inter', sans-serif; /* Applied Inter font */
+    font-weight: 500;
+    position: relative; /* Needed for the underline pseudo-element */
+}
+
+.nav .main_list ul li a:hover {
+    color: #bbbbbb; /* Hover effect from old header */
+}
+
+/* Underline animation for nav links */
+.nav .main_list ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s ease-out; /* Smooth transition for the line */
+}
+
+.nav .main_list ul li a:hover::after {
+    width: 100%;
+}
+
+
+/* Hamburger Menu Icon (re-styled from provided code) */
+.navTrigger {
+    display: none; /* Hidden by default on larger screens */
+    cursor: pointer;
+    width: 50px; /* Bigger size */
+    height: 40px; /* Bigger size */
+    margin: auto;
+    position: absolute;
+    right: 20px; /* Positioned on the right */
+    top: 0;
+    bottom: 0;
+    z-index: 1001; /* Above header */
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navTrigger i {
+    background-color: #fff;
+    border-radius: 2px;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px; /* Increased thickness */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Close button is not explicitly in the provided new HTML, so keep it for consistency */
+/* .close-menu-btn would be replaced by navTrigger.active state */
+.close-menu-btn { /* This style is for the "x" in the old implementation, not used in new one */
+    display: none;
+}
+
+
+/* Affix class for scrolled state */
+.affix {
+    padding: 0;
+    background-color: #111; /* Dark background on scroll */
+}
+
+/* --- END NEW NAVBAR STYLES --- */
+
+/* Define a CSS variable for the accent color */
+:root {
+    --accent-color: #00bfff; /* A vibrant electric blue */
+    /* Max opacity for the brightest shadow/outline */
+    --shadow-color: rgba(0, 191, 255, 1); /* Fully opaque blue for shadows */
+}
+
+/* Basic Reset & General Styles */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif; /* Reverted body font to Lato */
+    background-color: #121212;
+    color: #ffffff;
+    line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll from side nav */
+    position: relative; /* Needed for canvas z-index to work correctly on some browsers */
+}
+
+/* Canvas for Three.js animation - now spans the whole website */
+#threeJsCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Place it behind all other content */
+    display: block;
+}
+
+h1, h2, h3 {
+    font-family: 'Orbitron', sans-serif; /* Headings font remains Orbitron */
+    font-weight: bold;
+    text-transform: uppercase;
+    color: var(--accent-color); /* Apply accent color to headings */
+}
+
+h1 {
+    font-size: 4rem;
+    line-height: 1.1;
+}
+
+h2 {
+    font-size: 2.5rem;
+    margin-bottom: 20px;
+}
+
+p {
+    font-family: 'Lora', serif; /* Changed paragraph font to Lora */
+    font-size: 1rem;
+    color: #cccccc;
+}
+
+a {
+    color: #ffffff;
+    text-decoration: none;
+}
+
+img {
+    max-width: 100%;
+    height: auto;
+    display: block;
+}
+
+section {
+    padding: 60px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
+    position: relative; /* Ensure sections are above the canvas */
+    z-index: 1; /* Bring content above the canvas */
+}
+
+/* Header & Navigation */
+header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    padding: 20px 50px;
+    background-color: rgba(18, 18, 18, 0.8);
+    backdrop-filter: blur(5px);
+    z-index: 1000;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+header .logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--accent-color); /* Apply accent color to logo */
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+header nav ul li a:hover {
+    color: var(--accent-color); /* Change color to accent on hover */
+}
+
+/* Hero Section for About Page */
+#about-hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    padding-top: 100px;
+    position: relative; /* For containing the image collage */
+    overflow: hidden; /* Hide overflowing elements */
+}
+
+#about-hero h1 {
+    font-size: 6rem; /* Larger for impact */
+    margin-bottom: 20px; /* Space below heading */
+}
+
+#about-hero .tagline {
+    font-size: 1.5rem;
+    color: #cccccc;
+    margin-top: 50px; /* Space above tagline */
+}
+
+.image-collage {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 350px; /* Adjust as needed to fit all images without overflow */
+    width: 100%; /* Take full width to center images */
+    max-width: 1000px; /* Limit width for larger screens */
+    margin-top: 40px; /* Space below the H1 */
+    margin-bottom: 40px; /* Space below the images and above the tagline */
+}
+
+.image-collage img {
+    position: absolute;
+    width: 250px; /* Adjust size as needed */
+    height: 180px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px var(--shadow-color); /* Use accent shadow color */
+    opacity: 0.7; /* Semi-transparent effect */
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out; /* Smooth transitions */
+}
+
+/* Creative positioning and rotation for each image */
+.image-collage img:nth-child(1) {
+    transform: translate(-280px, -80px) rotate(-15deg);
+    z-index: 5;
+}
+.image-collage img:nth-child(2) {
+    transform: translate(-90px, 0px) rotate(5deg);
+    z-index: 7;
+}
+.image-collage img:nth-child(3) {
+    transform: translate(90px, -50px) rotate(10deg);
+    z-index: 6;
+}
+.image-collage img:nth-child(4) {
+    transform: translate(280px, 10px) rotate(-12deg);
+    z-index: 4;
+}
+
+
+/* History and Journey Sections */
+#history-journey {
+    display: flex;
+    flex-direction: column; /* Stack sections vertically */
+    gap: 80px; /* More space between the two main content blocks */
+    padding-top: 80px;
+    padding-bottom: 80px;
+}
+
+.content-block {
+    display: flex;
+    flex-wrap: wrap; /* Allow columns to wrap on smaller screens */
+    gap: 40px;
+    align-items: center; /* Vertically align items in the block */
+}
+
+.content-block .text-column {
+    flex: 1;
+    min-width: 300px; /* Minimum width for text before wrapping */
+    background-color: #1e1e1e; /* Card-like background */
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.3); /* Subtle shadow */
+}
+
+.content-block .image-column {
+    flex: 1;
+    min-width: 300px; /* Minimum width for images before wrapping */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px; /* Padding around images */
+    position: relative; /* For positioning images within */
+    height: 300px; /* Fixed height for the collage container */
+    overflow: hidden; /* Hide overflowing parts of images */
+}
+
+.content-block .image-column img {
+    position: absolute;
+    width: 200px; /* Smaller size for collage images */
+    height: 150px;
+    object-fit: cover;
+    border-radius: 8px;
+    box-shadow: 0 5px 15px var(--shadow-color); /* Use accent shadow color */
+    opacity: 0.8;
+    transition: transform 0.5s ease-out, opacity 0.5s ease-out;
+}
+
+/* Specific positioning for images within .image-column */
+.content-block .image-column img:nth-child(1) {
+    transform: translate(-80px, -40px) rotate(-10deg);
+    z-index: 3;
+}
+.content-block .image-column img:nth-child(2) {
+    transform: translate(40px, 10px) rotate(5deg);
+    z-index: 4;
+}
+.content-block .image-column img:nth-child(3) {
+    transform: translate(-20px, 80px) rotate(12deg);
+    z-index: 2;
+}
+
+
+#history-journey h2 {
+    font-size: 2.2rem;
+    margin-bottom: 25px;
+}
+
+#history-journey p {
+    margin-bottom: 15px;
+}
+
+
+/* Footer */
+footer {
+    text-align: center;
+    padding: 30px 20px;
+    border-top: 1px solid #2a2a2a;
+    font-size: 0.9rem;
+    color: #888888;
+    position: relative; /* Ensure footer is above the canvas */
+    z-index: 1; /* Bring content above the canvas */
+}
+
+
+/* --- Responsiveness --- */
+@media (max-width: 992px) {
+    #about-hero h1 {
+        font-size: 4.5rem;
+    }
+    #about-hero .tagline {
+        font-size: 1.2rem;
+    }
+    .image-collage {
+        height: 300px; /* Adjust height for smaller screens */
+    }
+    .image-collage img {
+        width: 200px; /* Adjust image size for smaller screens */
+        height: 140px;
+    }
+    .image-collage img:nth-child(1) { transform: translate(-220px, -60px) rotate(-15deg); }
+    .image-collage img:nth-child(2) { transform: translate(-70px, 0px) rotate(5deg); }
+    .image-collage img:nth-child(3) { transform: translate(70px, -40px) rotate(10deg); }
+    .image-collage img:nth-child(4) { transform: translate(220px, 10px) rotate(-12deg); }
+
+    .content-block {
+        flex-direction: column; /* Stack columns vertically on medium screens */
+        text-align: center; /* Center text when stacked */
+    }
+    /* For "A Little Bit of History" (first content-block) */
+    .content-block:nth-of-type(1) .text-column {
+        order: 1; /* Place text first */
+    }
+    .content-block:nth-of-type(1) .image-column {
+        order: 2; /* Place images second */
+    }
+
+    /* For "Journey of a Code" (second content-block) */
+    .content-block:nth-of-type(2) .text-column {
+        order: 1; /* Place text first */
+    }
+    .content-block:nth-of-type(2) .image-column {
+        order: 2; /* Place images second */
+    }
+
+    .content-block .text-column,
+    .content-block .image-column {
+        min-width: unset; /* Remove min-width for stacking */
+        width: 100%; /* Take full width when stacked */
+    }
+    .content-block .image-column {
+        height: 320px; /* Increased height for 992px breakpoint to prevent cutoff */
+    }
+    .content-block .image-column img {
+        width: 180px; /* Adjust image size for content blocks */
+        height: 130px;
+    }
+    .content-block .image-column img:nth-child(1) { transform: translate(-60px, -30px) rotate(-10deg); }
+    .content-block .image-column img:nth-child(2) { transform: translate(30px, 5px) rotate(5deg); }
+    .content-block .image-column img:nth-child(3) { transform: translate(-15px, 60px) rotate(12deg); }
+}
+
+@media (max-width: 768px) {
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2rem; }
+
+    header {
+        padding: 15px 20px;
+    }
+    header nav ul {
+        display: none; /* Hide for mobile, consider hamburger menu */
+    }
+    #about-hero h1 {
+        font-size: 3.5rem;
+    }
+    #about-hero .tagline {
+        font-size: 1rem;
+    }
+    .image-collage {
+        height: 250px; /* Further adjust height for smaller screens */
+    }
+    .image-collage img {
+        width: 180px; /* Further adjust image size */
+        height: 130px;
+    }
+    .image-collage img:nth-child(1) { transform: translate(-150px, -50px) rotate(-15deg); }
+    .image-collage img:nth-child(2) { transform: translate(-40px, 0px) rotate(5deg); }
+    .image-collage img:nth-child(3) { transform: translate(40px, -30px) rotate(10deg); }
+    .image-collage img:nth-child(4) { display: none; } /* Hide fourth image on very small screens */
+
+    .content-block .image-column {
+        height: 320px; /* Increased height for 768px breakpoint to prevent cutoff */
+    }
+    .content-block .image-column img {
+        width: 150px; /* Adjust image size for content blocks */
+        height: 110px;
+    }
+    .content-block .image-column img:nth-child(1) { transform: translate(-50px, -25px) rotate(-8deg); }
+    .content-block .image-column img:nth-child(2) { transform: translate(25px, 0px) rotate(3deg); }
+    .content-block .image-column img:nth-child(3) { transform: translate(-10px, 50px) rotate(10deg); }
+}
+
+@media (max-width: 480px) {
+    h1 { font-size: 2.5rem; }
+    h2 { font-size: 1.8rem; }
+    section { padding: 40px 15px; }
+    .image-collage {
+        height: 200px; /* Adjust height for very small screens */
+    }
+    .image-collage img {
+        width: 150px; /* Adjust image size for very small screens */
+        height: 100px;
+    }
+    /* Simplified transforms for very small screens or consider hiding collage */
+    .image-collage img:nth-child(1) { transform: translate(-80px, -30px) rotate(-10deg); }
+    .image-collage img:nth-child(2) { transform: translate(0px, 0px) rotate(5deg); }
+    .image-collage img:nth-child(3) { transform: translate(80px, -20px) rotate(10deg); }
+    .image-collage img:nth-child(4) { display: none; } /* Hide fourth image on very small screens */
+
+    .content-block .image-column {
+        display: none; /* Hide the image column entirely on very small screens */
+    }
+}

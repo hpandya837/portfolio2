@@ -1,17 +1,26 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // Smooth scrolling for internal links (optional)
-    const navLinks = document.querySelectorAll('header nav ul li a');
+    // Smooth scrolling for internal links
+    const navLinks = document.querySelectorAll('.navlinks a');
     navLinks.forEach(link => {
         link.addEventListener('click', function(e) {
             const href = this.getAttribute('href');
-            if (href.startsWith('#')) {
+            if (href.startsWith('#') && this.hostname === location.hostname && this.pathname === location.pathname) {
                 e.preventDefault();
                 const targetId = href.substring(1);
                 const targetElement = document.getElementById(targetId);
                 if (targetElement) {
                     targetElement.scrollIntoView({ behavior: 'smooth' });
+                    const mainListDiv = document.getElementById('mainListDiv');
+                    const navTrigger = document.querySelector('.navTrigger');
+                    if (mainListDiv.classList.contains('show_list')) {
+                        mainListDiv.classList.remove('show_list');
+                        navTrigger.classList.remove('active');
+                        document.body.style.overflow = '';
+                    }
                 }
+            } else if (href === "about.html") {
+                return;
             }
         });
     });
@@ -24,102 +33,123 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- Memory Lane Game Logic ---
     const gameGrid = document.querySelector('.memory-game-grid');
-    const gameCardsElements = document.querySelectorAll('.game-card'); // If hardcoded
+    const resetButton = document.getElementById('resetGameButton');
+    let gameCards = [];
 
-    // Example: If you want to dynamically create cards or have more complex logic
-    const cardValues = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D']; // Example pairs
+    // Image URLs for the memory game tiles
+    const imageUrls = [
+        "IMG_0799 (2).jpeg", // Grand Canyon
+        "IMG_0789 (1).jpeg", // Hoover Dam
+        "5B8B0C2F-7429-413D-9A3F-2FBF7043A3EB (2).jpeg", // Brooklyn Bridge
+        "IMG_0785 (2).jpeg", // Cappuccino
+        "IMG_0845 (2).jpeg", // Hot Air Balloons
+        "IMG_7325 (1).jpeg", // Railway Track
+        "IMG_8588.jpeg", // US Capitol
+        "IMG_8757 (1).jpeg8", // Niagara Falls
+        "IMG_8726 (1).jpeg", // Sunrise Malmö / Pier
+        "IMG_9409 (1).jpeg"  // Epcot
+    ];
+
+
+    const gameCardPairs = [...imageUrls, ...imageUrls];
+
     let flippedCards = [];
     let matchedPairs = 0;
+    let canFlip = true;
 
     function shuffle(array) {
         array.sort(() => Math.random() - 0.5);
     }
 
     function createBoard() {
-        shuffle(cardValues);
-        // If you are creating cards dynamically:
-        // gameGrid.innerHTML = ''; // Clear existing cards
-        // cardValues.forEach(value => {
-        //     const card = document.createElement('div');
-        //     card.classList.add('game-card');
-        //     card.dataset.value = value; // Store the value in a data attribute
-        //     card.textContent = '?'; // Initially hidden
-        //     card.addEventListener('click', handleCardClick);
-        //     gameGrid.appendChild(card);
-        // });
+        shuffle(gameCardPairs);
+        gameGrid.innerHTML = '';
+        matchedPairs = 0;
+        flippedCards = [];
+        canFlip = true;
+        resetButton.style.display = 'none';
 
-        // If using hardcoded HTML cards, assign values and event listeners
-        gameCardsElements.forEach((card, index) => {
-            if (cardValues[index]) {
-                card.dataset.value = cardValues[index];
-                card.addEventListener('click', handleCardClick);
-            } else {
-                card.style.visibility = 'hidden'; // Hide if not enough values for cards
-            }
-        });
+        for (let i = 0; i < gameCardPairs.length; i++) {
+            const card = document.createElement('div');
+            card.classList.add('game-card');
+            card.dataset.imageUrl = gameCardPairs[i];
+
+            const img = document.createElement('img');
+            img.src = gameCardPairs[i];
+            img.alt = "Memory Game Tile";
+            // Update the onerror placeholder image size to match the new card height
+            img.onerror = function() { this.src = 'https://placehold.co/250x250/2a2a2a/ffffff?text=Image+Error'; };
+            card.appendChild(img);
+
+            card.addEventListener('click', handleCardClick);
+            gameGrid.appendChild(card);
+            card.classList.remove('revealed', 'matched');
+        }
     }
 
     function handleCardClick(event) {
-        const clickedCard = event.target;
+        const clickedCard = event.target.closest('.game-card');
 
-        // Prevent clicking if card is already flipped or matched, or if 2 cards are already flipped
-        if (clickedCard.classList.contains('revealed') || flippedCards.length === 2) {
+        if (!clickedCard || !canFlip || clickedCard.classList.contains('revealed') || clickedCard.classList.contains('matched') || flippedCards.includes(clickedCard)) {
             return;
         }
 
-        clickedCard.textContent = clickedCard.dataset.value;
         clickedCard.classList.add('revealed');
         flippedCards.push(clickedCard);
 
         if (flippedCards.length === 2) {
+            canFlip = false;
             checkForMatch();
         }
     }
 
     function checkForMatch() {
         const [card1, card2] = flippedCards;
-        if (card1.dataset.value === card2.dataset.value) {
-            // Matched
-            card1.removeEventListener('click', handleCardClick); // Prevent further clicks on matched cards
+        if (card1.dataset.imageUrl === card2.dataset.imageUrl) {
+            card1.classList.add('matched');
+            card2.classList.add('matched');
+            card1.removeEventListener('click', handleCardClick);
             card2.removeEventListener('click', handleCardClick);
             matchedPairs++;
             flippedCards = [];
-            if (matchedPairs === cardValues.length / 2) {
-                // Replaced alert with console.log for canvas compatibility
+            canFlip = true;
+
+            if (matchedPairs === imageUrls.length) {
                 console.log('Congratulations! You found all pairs!');
-                // You could add a reset button or auto-reset here
+                resetButton.style.display = 'block';
             }
         } else {
-            // Not a match
             setTimeout(() => {
-                card1.textContent = '?';
                 card1.classList.remove('revealed');
-                card2.textContent = '?';
                 card2.classList.remove('revealed');
                 flippedCards = [];
-            }, 1000); // Show for 1 second before flipping back
+                canFlip = true;
+            }, 1000);
         }
     }
 
-    // Initialize the game if the grid exists
-    if (gameGrid && gameCardsElements.length > 0) {
+    function resetGame() {
         createBoard();
+    }
+
+    if (gameGrid) {
+        createBoard();
+        resetButton.addEventListener('click', resetGame);
     }
 
 
     // --- Intersection Observer for Animations (Optional) ---
     const sections = document.querySelectorAll('section');
     const options = {
-        root: null, // viewport
-        threshold: 0.1, // 10% of the section is visible
+        root: null,
+        threshold: 0.1,
         rootMargin: "0px"
     };
 
     const observer = new IntersectionObserver((entries, observer) => {
         entries.forEach(entry => {
             if (entry.isIntersecting) {
-                entry.target.classList.add('is-visible'); // Add a class to trigger animation
-                // observer.unobserve(entry.target); // Optional: stop observing once visible
+                entry.target.classList.add('is-visible');
             }
         });
     }, options);
@@ -127,9 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     sections.forEach(section => {
         observer.observe(section);
     });
-    // Add CSS for .is-visible (e.g., opacity, transform)
-    // section { opacity: 0; transform: translateY(20px); transition: opacity 0.5s ease-out, transform 0.5s ease-out; }
-    // section.is-visible { opacity: 1; transform: translateY(0); }
+
 
     // --- Contact Form Logic ---
     const contactForm = document.getElementById('contact-form');
@@ -137,28 +165,24 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (contactForm) {
         contactForm.addEventListener('submit', function(e) {
-            e.preventDefault(); // Prevent actual form submission
+            e.preventDefault();
 
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
             const subject = document.getElementById('subject').value;
             const message = document.getElementById('message').value;
 
-            // Simulate sending data (in a real app, you'd send this to a server)
             console.log('Contact Form Submitted:');
             console.log('Name:', name);
             console.log('Email:', email);
             console.log('Subject:', subject);
             console.log('Message:', message);
 
-            // Display success message
             contactMessage.style.display = 'block';
-            contactMessage.style.color = '#4CAF50'; // Green success message
+            contactMessage.style.color = '#4CAF50';
 
-            // Clear the form fields
             contactForm.reset();
 
-            // Hide message after a few seconds
             setTimeout(() => {
                 contactMessage.style.display = 'none';
             }, 5000);
@@ -176,37 +200,123 @@ document.addEventListener('DOMContentLoaded', () => {
         css: "I excel in CSS3, utilizing advanced techniques like Flexbox, Grid, and responsive design principles to craft visually appealing and adaptive user interfaces. I'm also familiar with preprocessors like SCSS."
     };
 
-    // Function to update the skill description
     function updateSkillDescription(skill) {
         if (skillProficiencies[skill]) {
-            skillDescriptionElement.style.opacity = 0; // Fade out
+            skillDescriptionElement.style.opacity = 0;
             setTimeout(() => {
                 skillDescriptionElement.textContent = skillProficiencies[skill];
-                skillDescriptionElement.style.opacity = 1; // Fade in
-            }, 300); // Match CSS transition duration
+                skillDescriptionElement.style.opacity = 1;
+            }, 300);
         } else {
             skillDescriptionElement.textContent = "Click on a skill above to learn more about my proficiency in it!";
             skillDescriptionElement.style.opacity = 1;
         }
     }
 
-    // Add click listeners to each skill icon
     skillIcons.forEach(icon => {
         icon.addEventListener('click', () => {
-            // Remove 'active' class from all icons
             skillIcons.forEach(i => i.classList.remove('active'));
-            // Add 'active' class to the clicked icon
             icon.classList.add('active');
-
             const skill = icon.dataset.skill;
             updateSkillDescription(skill);
         });
     });
 
-    // Set initial description for the first skill or a default message
-    // You can uncomment the line below to set JavaScript as active by default
-    // if (skillIcons.length > 0) {
-    //     skillIcons[0].classList.add('active');
-    //     updateSkillDescription(skillIcons[0].dataset.skill);
-    // }
+    // --- New Navbar Logic (Converted from jQuery) ---
+    const nav = document.querySelector('.nav');
+    const mainListDiv = document.getElementById('mainListDiv');
+    const navTrigger = document.querySelector('.navTrigger');
+
+    // Scroll event for affix class
+    window.addEventListener('scroll', () => {
+        if (document.documentElement.scrollTop > 50) {
+            nav.classList.add('affix');
+        } else {
+            nav.classList.remove('affix');
+        }
+    });
+
+    // Nav Trigger click event for mobile menu
+    navTrigger.addEventListener('click', () => {
+        navTrigger.classList.toggle('active');
+        mainListDiv.classList.toggle('show_list');
+        if (mainListDiv.classList.contains('show_list')) {
+            document.body.style.overflow = 'hidden';
+        } else {
+            document.body.style.overflow = '';
+        }
+    });
+
+    // --- Three.js Animation Logic ---
+    let scene, camera, renderer, particles;
+    const canvasElement = document.getElementById('threeJsCanvas');
+
+    function initThreeJS() {
+        scene = new THREE.Scene();
+
+        camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        camera.position.z = 5;
+
+        renderer = new THREE.WebGLRenderer({ canvas: canvasElement, antialias: true, alpha: true });
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.setPixelRatio(window.devicePixelRatio);
+
+        const particleCount = 3000;
+        const geometry = new THREE.BufferGeometry();
+        const positions = [];
+        const colors = [];
+
+        for (let i = 0; i < particleCount; i++) {
+            const x = (Math.random() - 0.5) * 20;
+            const y = (Math.random() - 0.5) * 20;
+            const z = (Math.random() - 0.5) * 20;
+            positions.push(x, y, z);
+
+            const color = new THREE.Color();
+            color.setHSL(0.55 + Math.random() * 0.1, 0.8, 0.3 + Math.random() * 0.2);
+            colors.push(color.r, color.g, color.b);
+        }
+
+        geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+        geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+        const material = new THREE.PointsMaterial({
+            size: 0.015,
+            vertexColors: true,
+            transparent: true,
+            opacity: 0.8,
+            blending: THREE.AdditiveBlending
+        });
+
+        particles = new THREE.Points(geometry, material);
+        scene.add(particles);
+
+        window.addEventListener('resize', onWindowResize, false);
+    }
+
+    function onWindowResize() {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+    }
+
+    function animateThreeJS() {
+        requestAnimationFrame(animateThreeJS);
+
+        particles.rotation.x += 0.0002;
+        particles.rotation.y += 0.0004;
+        particles.position.z += 0.002;
+        if (particles.position.z > 5) {
+            particles.position.z = -5;
+        }
+
+        renderer.render(scene, camera);
+    }
+
+    window.onload = function () {
+        if (canvasElement) {
+            initThreeJS();
+            animateThreeJS();
+        }
+    }
 });

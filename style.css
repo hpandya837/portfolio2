@@ -1,3 +1,10 @@
+/* Define a CSS variable for the accent color used in about.html for consistency */
+:root {
+    --accent-color: #00bfff; /* A vibrant electric blue */
+    --shadow-color: rgba(0, 191, 255, 1); /* Fully opaque blue for shadows */
+    --cyan-color: rgba(0, 255, 255, 1); /* Pure cyan color for new accents */
+}
+
 /* Basic Reset & General Styles */
 * {
     margin: 0;
@@ -6,26 +13,46 @@
 }
 
 body {
-    font-family: 'Inter', sans-serif; /* Changed to Inter */
+    font-family: 'Inter', sans-serif; /* Changed to Inter for main site */
     background-color: #121212; /* Dark background from images */
     color: #ffffff; /* White text */
     line-height: 1.6;
+    overflow-x: hidden; /* Prevent horizontal scroll from side nav */
+    position: relative; /* Needed for canvas z-index to work correctly on some browsers */
 }
 
+/* Canvas for Three.js animation - now spans the whole website */
+#threeJsCanvas {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1; /* Place it behind all other content */
+    display: block;
+}
+
+/* Titles and Headings */
 h1, h2, h3 {
+    font-family: 'Orbitron', sans-serif; /* Applied Orbitron font to main titles */
     font-weight: bold; /* As seen in images, very bold headings */
     text-transform: uppercase;
 }
 
+/* Specific color for H1 */
 h1 {
+    color: var(--accent-color); /* Changed H1 color to blue */
     font-size: 4rem; /* Adjust as needed */
     line-height: 1.1;
 }
 
-h2 {
+/* Specific color for H2 and H3 to keep them white */
+h2, h3 {
+    color: #ffffff; /* Keep H2 and H3 white */
     font-size: 2.5rem; /* Adjust as needed */
     margin-bottom: 20px;
 }
+
 
 p {
     font-size: 1rem;
@@ -49,43 +76,145 @@ section {
     margin: 0 auto; /* Center content */
 }
 
-/* Header & Navigation */
-header {
-    position: fixed; /* Or sticky */
+/* --- NEW NAVBAR STYLES (from provided code) --- */
+.nav {
+    width: 100%;
+    height: 65px;
+    position: fixed;
+    line-height: 65px;
+    text-align: center;
     top: 0;
     left: 0;
-    width: 100%;
-    padding: 20px 50px;
-    background-color: rgba(18, 18, 18, 0.8); /* Slight transparency */
-    backdrop-filter: blur(5px); /* Frosted glass effect */
     z-index: 1000;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    transition: all 0.4s ease;
+    background-color: rgba(18, 18, 18, 0.8); /* Match old header background */
+    backdrop-filter: blur(5px);
+}
+
+.nav .container {
+    max-width: 1200px; /* Align with general section width */
+    margin: 0 auto;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    height: 100%; /* Ensure content inside aligns vertically */
+    padding: 0 20px; /* Padding for container */
 }
 
-header .logo {
-    font-size: 1.5rem;
+.nav .logo {
+    float: left;
+    width: auto;
+    height: auto;
+    padding-left: 0; /* Adjusted for container padding */
+}
+
+.nav .logo a {
+    text-decoration: none;
+    color: var(--accent-color); /* Kept blue as per previous request */
+    font-size: 2.5rem; /* Increased size */
+    font-family: 'Orbitron', sans-serif; /* Applied Orbitron font */
     font-weight: bold;
 }
 
-header nav ul {
-    list-style: none;
+.nav .logo a:hover {
+    color: var(--accent-color); /* Keep it blue on hover */
+}
+
+.nav .main_list {
+    height: 65px;
+    float: right;
+}
+
+.nav .main_list ul {
+    width: 100%;
+    height: 65px;
     display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
 }
 
-header nav ul li {
-    margin-left: 20px;
+.nav .main_list ul li {
+    width: auto;
+    height: 65px;
+    padding: 0;
+    padding-right: 3rem;
 }
 
-header nav ul li a {
+.nav .main_list ul li a {
+    text-decoration: none;
+    color: #fff;
+    line-height: 65px;
+    font-size: 1.1rem; /* Adjusted for readability */
+    font-family: 'Inter', sans-serif; /* Applied Inter font */
     font-weight: 500;
-    font-size: 0.9rem;
+    position: relative; /* Needed for the underline pseudo-element */
 }
 
-header nav ul li a:hover {
-    color: #bbbbbb; /* Hover effect */
+.nav .main_list ul li a:hover {
+    color: #bbbbbb; /* Hover effect from old header */
 }
+
+/* Underline animation for nav links */
+.nav .main_list ul li a::after {
+    content: '';
+    position: absolute;
+    width: 0;
+    height: 2px;
+    background-color: var(--accent-color);
+    bottom: 0;
+    left: 0;
+    transition: width 0.3s ease-out; /* Smooth transition for the line */
+}
+
+.nav .main_list ul li a:hover::after {
+    width: 100%;
+}
+
+
+/* Hamburger Menu Icon (re-styled from provided code) */
+.navTrigger {
+    display: none; /* Hidden by default on larger screens */
+    cursor: pointer;
+    width: 50px; /* Bigger size */
+    height: 40px; /* Bigger size */
+    margin: auto;
+    position: absolute;
+    right: 20px; /* Positioned on the right */
+    top: 0;
+    bottom: 0;
+    z-index: 1001; /* Above header */
+    flex-direction: column;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.navTrigger i {
+    background-color: #fff;
+    border-radius: 2px;
+    content: '';
+    display: block;
+    width: 100%;
+    height: 4px; /* Increased thickness */
+    transition: all 0.3s ease-in-out;
+}
+
+/* Close button is not explicitly in the provided new HTML, so keep it for consistency */
+/* .close-menu-btn would be replaced by navTrigger.active state */
+.close-menu-btn { /* This style is for the "x" in the old implementation, not used in new one */
+    display: none;
+}
+
+
+/* Affix class for scrolled state */
+.affix {
+    padding: 0;
+    background-color: #111; /* Dark background on scroll */
+}
+
+/* --- END NEW NAVBAR STYLES --- */
 
 
 /* Hero Section */
@@ -94,9 +223,13 @@ header nav ul li a:hover {
     display: flex;
     flex-direction: column; /* Stack main title and intro */
     justify-content: center; /* Vertically center content */
-    align-items: flex-start; /* Align text to the left */
+    align-items: flex-start; /* Align items to the left */
     padding-top: 100px; /* Account for fixed header */
+    position: relative; /* Allows content to be above the global canvas */
 }
+
+/* No need for .hero-content-container anymore as canvas is global */
+
 
 #hero .hero-main-title h1 {
     margin-bottom: 50px; /* Space between title and intro block */
@@ -187,6 +320,42 @@ header nav ul li a:hover {
     transform: scale(1.05);
 }
 
+/* Specific styling for Java icon */
+#java-icon.tech-icon:hover {
+    border-color: #FF0000; /* Red outline on hover for Java */
+}
+
+#java-icon.tech-icon.active {
+    background-color: #FF0000; /* Red background when active for Java */
+    color: white; /* White text for readability on red background */
+    border: 2px solid #FF0000; /* Ensure outline matches background when active */
+    box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+}
+
+/* Specific styling for HTML icon */
+#html-icon.tech-icon:hover {
+    border-color: #FFA500; /* Orange outline on hover for HTML */
+}
+
+#html-icon.tech-icon.active {
+    background-color: #FFA500; /* Orange background when active for HTML */
+    color: #333333; /* Dark text for readability on orange background */
+    border: 2px solid #FFA500; /* Ensure outline matches background when active */
+    box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
+}
+
+/* Specific styling for CSS icon */
+#css-icon.tech-icon:hover {
+    border-color: #800080; /* Purple outline on hover for CSS */
+}
+
+#css-icon.tech-icon.active {
+    background-color: #800080; /* Purple background when active for CSS */
+    color: white; /* White text for readability on purple background */
+    border: 2px solid #800080; /* Ensure outline matches background when active */
+    box-shadow: 0 0 20px rgba(128, 0, 128, 0.8);
+}
+
 #skill-description {
     max-width: 700px;
     margin: 0 auto;
@@ -247,16 +416,21 @@ header nav ul li a:hover {
 }
 
 .projects-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr)); /* Responsive grid */
-    gap: 30px;
+    display: flex; /* Use flexbox to stack the first card and the grid below it */
+    flex-direction: column;
+    gap: 30px; /* Gap between the first card and the secondary grid */
 }
 
 .project-card {
     background-color: #1e1e1e; /* Slightly lighter than main bg */
     padding: 25px;
     border-radius: 8px;
-    /* Add subtle border or shadow if desired */
+    transition: box-shadow 0.3s ease-in-out; /* Add transition for smooth effect */
+}
+
+/* Specific styling for the first project card (Speechify) */
+#speechify-card {
+    min-height: 350px; /* Make it longer */
 }
 
 .project-card h3 {
@@ -285,9 +459,63 @@ header nav ul li a:hover {
     font-size: 0.8rem;
 }
 
-.project-preview img {
+/* Style for all project preview containers */
+.project-card .project-preview {
+    margin-top: 20px; /* Add some space above the image */
+    text-align: center; /* Center the image horizontally for block images */
+}
+
+/* Style for images within project preview containers */
+.project-card .project-preview img {
     border-radius: 4px;
-    /* Add styling for the preview images if needed */
+    display: block; /* Ensure it's a block element to apply margin auto if parent isn't flex */
+    margin: 0 auto; /* Center the image horizontally */
+    max-width: 100%; /* Ensure it's responsive */
+    height: auto; /* Maintain aspect ratio */
+}
+
+/* Specific styling for the image in the Speechify project card */
+#speechify-card .project-preview img {
+    /* The original placeholder is 400x250. This card is much wider.
+       To make it "bigger" and "proportionate" with the wider card,
+       we'll set a larger explicit width and height.
+       800x500 maintains the 1.6 aspect ratio (400/250 = 1.6, 800/500 = 1.6).
+       This will make the image visually larger within the card. */
+    width: 800px;
+    height: 500px;
+    object-fit: cover; /* Ensures the image covers the entire specified dimensions, cropping if necessary */
+    /* max-width and height: auto are already defined in the general .project-card .project-preview img,
+       and will ensure responsiveness on smaller screens. */
+}
+
+
+/* New grid for the remaining 6 cards */
+.secondary-projects-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); /* 3 columns for desktop */
+    gap: 30px;
+}
+
+/* Specific shadow colors for project cards */
+.default-blue-shadow {
+    box-shadow: 0 5px 15px var(--shadow-color);
+}
+.default-blue-shadow:hover {
+    box-shadow: 0 5px 20px var(--shadow-color);
+}
+
+.subtle-gold-shadow {
+    box-shadow: 0 0 30px 5px rgba(255, 236, 64, 1); /* Brighter Gold with larger blur/spread */
+}
+.subtle-gold-shadow:hover {
+    box-shadow: 0 0 40px 8px rgba(255, 236, 64, 1); /* Even brighter on hover */
+}
+
+.cool-cyan-shadow {
+    box-shadow: 0 5px 15px var(--cyan-color); /* Using cyan color for the shadow */
+}
+.cool-cyan-shadow:hover {
+    box-shadow: 0 5px 20px var(--cyan-color); /* Even brighter on hover */
 }
 
 
@@ -303,46 +531,103 @@ header nav ul li a:hover {
 .view-gallery-link {
     display: inline-block;
     margin-bottom: 30px;
-    color: #aaaaaa;
+    color: var(--cyan-color); /* Changed link color to cyan */
     font-size: 0.9rem;
+    transition: text-shadow 0.3s ease; /* Smooth transition for text shadow */
+}
+
+.view-gallery-link:hover {
+    text-shadow: 0 0 8px var(--cyan-color); /* Subtle glow on hover */
 }
 
 .memory-game-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust card size */
+    grid-template-columns: repeat(5, 1fr); /* 5 columns as requested */
     gap: 15px;
-    max-width: 600px; /* Adjust as needed */
+    max-width: 1200px; /* Matches section max-width */
     margin: 0 auto;
 }
 
 .game-card {
     background-color: #2a2a2a;
-    height: 100px; /* Or use aspect-ratio */
+    height: 250px; /* Increased height to match work card image height */
     border-radius: 8px;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 2.5rem;
-    font-weight: bold;
+    overflow: hidden;
     cursor: pointer;
-    transition: background-color 0.3s, transform 0.3s;
+    transition: background-color 0.3s, transform 0.3s, border-color 0.3s;
+    border: 2px solid transparent;
+    position: relative;
 }
 
 .game-card:hover {
     background-color: #333333;
+    border-color: var(--accent-color);
 }
 
-/* Example: revealed card style (you'll toggle this with JS) */
+.game-card img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensures image covers the card, cropping if aspect ratio differs */
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
 .game-card.revealed {
-    background-color: #4CAF50; /* Or show an image */
-    color: white;
-    transform: rotateY(180deg); /* Flip effect */
+    background-color: #eee;
+    transform: rotateY(180deg);
+    border-color: transparent;
+}
+
+.game-card.revealed img {
+    opacity: 1;
+}
+
+.game-card.matched {
+    background-color: var(--accent-color);
+    opacity: 0.8;
+    cursor: default;
+    border-color: transparent;
+}
+
+.game-card.matched img {
+    opacity: 1;
+}
+
+.reset-button {
+    background-color: var(--accent-color);
+    color: #ffffff;
+    padding: 12px 25px;
+    border: none;
+    border-radius: 8px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.2s ease, box-shadow 0.3s ease, color 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 191, 255, 0.3);
+    margin-top: 30px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: fit-content;
+}
+
+.reset-button:hover {
+    background-color: #008cba;
+    transform: translateY(-2px);
+    box-shadow: 0 6px 15px rgba(0, 191, 255, 0.5);
+    color: transparent;
 }
 
 /* Contact Section */
 #contact {
     text-align: center;
-    padding-bottom: 80px; /* More space at the bottom */
+    padding-bottom: 80px;
 }
 
 #contact h2 {
@@ -358,6 +643,13 @@ header nav ul li a:hover {
     padding: 30px;
     background-color: #1e1e1e;
     border-radius: 8px;
+    border: 2px solid var(--cyan-color); /* Permanent cyan border */
+    transition: border-color 0.3s ease-in-out, box-shadow 0.3s ease-in-out; /* Add box-shadow to transition */
+}
+
+#contact form:hover {
+    border-color: var(--cyan-color); /* Keep cyan border on hover */
+    box-shadow: 0 0 30px 5px var(--cyan-color); /* Cyan glow on hover */
 }
 
 #contact form label {
@@ -365,7 +657,7 @@ header nav ul li a:hover {
     font-size: 0.9rem;
     color: #cccccc;
     margin-bottom: 5px;
-    display: block; /* Ensures label is on its own line */
+    display: block;
 }
 
 #contact form input[type="text"],
@@ -385,11 +677,11 @@ header nav ul li a:hover {
 #contact form input[type="text"]:focus,
 #contact form input[type="email"]:focus,
 #contact form textarea:focus {
-    border-color: #f0db4f; /* Highlight on focus */
+    border-color: var(--cyan-color); /* Changed focus border to cyan */
 }
 
 #contact form textarea {
-    resize: vertical; /* Allow vertical resizing */
+    resize: vertical;
     min-height: 120px;
 }
 
@@ -414,8 +706,8 @@ header nav ul li a:hover {
 #contact-message {
     margin-top: 20px;
     font-size: 1rem;
-    color: #4CAF50; /* Green for success */
-    display: none; /* Hidden by default */
+    color: #4CAF50;
+    display: none;
 }
 
 
@@ -423,17 +715,156 @@ header nav ul li a:hover {
 footer {
     text-align: center;
     padding: 30px 20px;
-    border-top: 1px solid #2a2a2a; /* Subtle separator */
+    border-top: 1px solid #2a2a2a;
     font-size: 0.9rem;
     color: #888888;
 }
 
 
 /* --- Responsiveness --- */
-/* Example Media Queries */
-@media (max-width: 992px) {
+@media screen and (max-width: 768px) {
+    .nav .main_list {
+        width: 100%;
+        height: 0;
+        overflow: hidden;
+        position: fixed;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        background-color: #121212;
+        flex-direction: column;
+        padding: 60px 20px 20px;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+        z-index: 998;
+        display: flex;
+        align-items: flex-start;
+        gap: 15px;
+        transform: translateX(100%);
+        transition: transform 0.4s ease-in-out;
+    }
+    .nav .main_list.show_list {
+        height: 100vh;
+        transform: translateX(0);
+    }
+    .nav .main_list ul {
+        flex-direction: column;
+        width: 100%;
+        height: auto;
+        right: 0;
+        left: 0;
+        bottom: 0;
+        background-color: transparent;
+    }
+    .nav .main_list ul li {
+        width: 100%;
+        text-align: right;
+        padding-right: 0;
+    }
+    .nav .main_list ul li a {
+        text-align: right;
+        width: 100%;
+        font-size: 2.4rem;
+        padding: 10px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    .nav .main_list ul li:last-child a {
+        border-bottom: none;
+    }
+
+    .navTrigger {
+        display: flex;
+    }
+    .nav div.logo {
+        margin-left: 0;
+    }
+    h1 { font-size: 3rem; }
+    h2 { font-size: 2rem; }
+    .projects-grid {
+        /* No change needed here, flex column already handles stacking */
+    }
+    .memory-game-grid {
+        grid-template-columns: repeat(4, 1fr); /* 4 columns for smaller tablets and larger phones */
+    }
+    .game-card {
+        height: 180px; /* Adjusted height for mobile to maintain aspect */
+    }
+    #contact form {
+        padding: 20px;
+    }
+    /* Adjust secondary projects grid for smaller screens */
+    .secondary-projects-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* Hamburger animation */
+.navTrigger i:nth-child(1) {
+    animation: outT 0.8s backwards;
+    animation-direction: reverse;
+}
+
+.navTrigger i:nth-child(2) {
+    margin: 5px 0;
+    animation: outM 0.8s backwards;
+    animation-direction: reverse;
+}
+
+.navTrigger i:nth-child(3) {
+    animation: outBtm 0.8s backwards;
+    animation-direction: reverse;
+}
+
+.navTrigger.active i:nth-child(1) {
+    animation: inT 0.8s forwards;
+}
+
+.navTrigger.active i:nth-child(2) {
+    animation: inM 0.8s forwards;
+}
+
+.navTrigger.active i:nth-child(3) {
+    animation: inBtm 0.8s forwards;
+}
+
+@keyframes inM {
+    50% { transform: rotate(0deg); }
+    100% { transform: rotate(45deg); }
+}
+
+@keyframes outM {
+    50% { transform: rotate(0deg); }
+    100% { transform: rotate(45deg); }
+}
+
+@keyframes inT {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(9px) rotate(0deg); }
+    100% { transform: translateY(9px) rotate(135deg); }
+}
+
+@keyframes outT {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(9px) rotate(0deg); }
+    100% { transform: translateY(9px) rotate(135deg); }
+}
+
+@keyframes inBtm {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-9px) rotate(0deg); }
+    100% { transform: translateY(-9px) rotate(135deg); }
+}
+
+@keyframes outBtm {
+    0% { transform: translateY(0px) rotate(0deg); }
+    50% { transform: translateY(-9px) rotate(0deg); }
+    100% { transform: translateY(-9px) rotate(135deg); }
+}
+/* End Hamburger animation */
+
+
+@media (max-width: 992px) and (min-width: 769px) {
     #hero .hero-intro {
-        flex-direction: column; /* Stack elements on smaller screens */
+        flex-direction: column;
     }
     #current-focus {
         flex-direction: column;
@@ -443,31 +874,11 @@ footer {
         text-align: center;
         margin-bottom: 20px;
     }
-}
-
-@media (max-width: 768px) {
-    h1 { font-size: 3rem; }
-    h2 { font-size: 2rem; }
-
-    header {
-        padding: 15px 20px;
-    }
-    header nav ul {
-        /* Consider a hamburger menu for mobile */
-        display: none; /* Simplistic: hide for now, implement hamburger later */
-    }
-    .projects-grid {
-        grid-template-columns: 1fr; /* Stack project cards */
+    .secondary-projects-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
     .memory-game-grid {
-        grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
-    }
-    .game-card {
-        height: 80px;
-        font-size: 2rem;
-    }
-    #contact form {
-        padding: 20px;
+        grid-template-columns: repeat(4, 1fr); /* Adjusted for larger tablets to 4 columns */
     }
 }
 
@@ -487,5 +898,35 @@ footer {
         padding: 15px;
         min-width: 70px;
         min-height: 70px;
+    }
+    /* Further adjustments for speechify card if needed for smaller height */
+    #speechify-card {
+        min-height: 250px;
+    }
+    .memory-game-grid {
+        grid-template-columns: 1fr; /* Single column for very small phones */
+    }
+    .game-card {
+        height: 200px; /* Adjust height for very small phones to maintain aspect */
+    }
+}
+
+/* Added content styles */
+.myH2 {
+    text-align:center;
+    font-size: 4rem;
+    color: #ffffff;
+    margin-top: 50px;
+}
+.myP {
+    text-align: justify;
+    padding-left:15%;
+    padding-right:15%;
+    font-size: 20px;
+    color: #cccccc;
+}
+@media all and (max-width:700px){
+    .myP {
+        padding:2%;
     }
 }
