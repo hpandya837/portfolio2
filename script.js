@@ -273,7 +273,8 @@ document.addEventListener('DOMContentLoaded', () => {
             positions.push(x, y, z);
 
             const color = new THREE.Color();
-            color.setHSL(0.55 + Math.random() * 0.1, 0.8, 0.3 + Math.random() * 0.2);
+            // Increased the saturation and lightness values for brighter colors
+            color.setHSL(0.55 + Math.random() * 0.1, 1, 0.5 + Math.random() * 0.4); // Adjusted for brighter colors
             colors.push(color.r, color.g, color.b);
         }
 
@@ -284,7 +285,7 @@ document.addEventListener('DOMContentLoaded', () => {
             size: 0.015,
             vertexColors: true,
             transparent: true,
-            opacity: 0.8,
+            opacity: 1, // Increased opacity to 1 for more solid appearance
             blending: THREE.AdditiveBlending
         });
 
