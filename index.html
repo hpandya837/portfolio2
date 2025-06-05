@@ -4,32 +4,855 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Hardav - Portfolio</title>
-    <!-- Link to Google Fonts for Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
-    <link href="style.css" rel="stylesheet">
+    <!-- Link to Google Fonts for Inter, Orbitron, Lato, and Lora -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&family=Lato:wght@400;700&family=Orbitron:wght@400;700&family=Lora:wght@400;700&display=swap" rel="stylesheet">
     <style>
-        
+        /* Define a CSS variable for the accent color used in about.html for consistency */
+        :root {
+            --accent-color: #00bfff; /* A vibrant electric blue */
+            --shadow-color: rgba(0, 191, 255, 1); /* Fully opaque blue for shadows */
+        }
+
+        /* Basic Reset & General Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif; /* Changed to Inter for main site */
+            background-color: #121212; /* Dark background from images */
+            color: #ffffff; /* White text */
+            line-height: 1.6;
+            overflow-x: hidden; /* Prevent horizontal scroll from side nav */
+            position: relative; /* Needed for canvas z-index to work correctly on some browsers */
+        }
+
+        /* Canvas for Three.js animation - now spans the whole website */
+        #threeJsCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1; /* Place it behind all other content */
+            display: block;
+        }
+
+        /* Titles and Headings */
+        h1, h2, h3 {
+            font-family: 'Orbitron', sans-serif; /* Applied Orbitron font to main titles */
+            font-weight: bold; /* As seen in images, very bold headings */
+            text-transform: uppercase;
+        }
+
+        /* Specific color for H1 */
+        h1 {
+            color: var(--accent-color); /* Changed H1 color to blue */
+            font-size: 4rem; /* Adjust as needed */
+            line-height: 1.1;
+        }
+
+        /* Specific color for H2 and H3 to keep them white */
+        h2, h3 {
+            color: #ffffff; /* Keep H2 and H3 white */
+            font-size: 2.5rem; /* Adjust as needed */
+            margin-bottom: 20px;
+        }
+
+
+        p {
+            font-size: 1rem;
+            color: #cccccc; /* Slightly off-white for paragraphs */
+        }
+
+        a {
+            color: #ffffff;
+            text-decoration: none;
+        }
+
+        img {
+            max-width: 100%;
+            height: auto;
+            display: block;
+        }
+
+        section {
+            padding: 60px 20px; /* General padding for sections */
+            max-width: 1200px; /* Max width for content */
+            margin: 0 auto; /* Center content */
+        }
+
+        /* --- NEW NAVBAR STYLES (from provided code) --- */
+        .nav {
+            width: 100%;
+            height: 65px;
+            position: fixed;
+            line-height: 65px;
+            text-align: center;
+            top: 0;
+            left: 0;
+            z-index: 1000;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            transition: all 0.4s ease;
+            background-color: rgba(18, 18, 18, 0.8); /* Match old header background */
+            backdrop-filter: blur(5px);
+        }
+
+        .nav .container {
+            max-width: 1200px; /* Align with general section width */
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 100%; /* Ensure content inside aligns vertically */
+            padding: 0 20px; /* Padding for container */
+        }
+
+        .nav .logo {
+            float: left;
+            width: auto;
+            height: auto;
+            padding-left: 0; /* Adjusted for container padding */
+        }
+
+        .nav .logo a {
+            text-decoration: none;
+            color: var(--accent-color); /* Kept blue as per previous request */
+            font-size: 2.5rem; /* Increased size */
+            font-family: 'Orbitron', sans-serif; /* Applied Orbitron font */
+            font-weight: bold;
+        }
+
+        .nav .logo a:hover {
+            color: #00E676; /* Green hover from provided code */
+        }
+
+        .nav .main_list {
+            height: 65px;
+            float: right;
+        }
+
+        .nav .main_list ul {
+            width: 100%;
+            height: 65px;
+            display: flex;
+            list-style: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        .nav .main_list ul li {
+            width: auto;
+            height: 65px;
+            padding: 0;
+            padding-right: 3rem;
+        }
+
+        .nav .main_list ul li a {
+            text-decoration: none;
+            color: #fff;
+            line-height: 65px;
+            font-size: 1.1rem; /* Adjusted for readability */
+            font-family: 'Inter', sans-serif; /* Applied Inter font */
+            font-weight: 500;
+        }
+
+        .nav .main_list ul li a:hover {
+            color: #bbbbbb; /* Hover effect from old header */
+        }
+
+        /* Hamburger Menu Icon (re-styled from provided code) */
+        .navTrigger {
+            display: none; /* Hidden by default on larger screens */
+            cursor: pointer;
+            width: 50px; /* Bigger size */
+            height: 40px; /* Bigger size */
+            margin: auto;
+            position: absolute;
+            right: 20px; /* Positioned on the right */
+            top: 0;
+            bottom: 0;
+            z-index: 1001; /* Above header */
+            flex-direction: column;
+            justify-content: space-around;
+            align-items: center;
+        }
+
+        .navTrigger i {
+            background-color: #fff;
+            border-radius: 2px;
+            content: '';
+            display: block;
+            width: 100%;
+            height: 4px; /* Increased thickness */
+            transition: all 0.3s ease-in-out;
+        }
+
+        /* Close button is not explicitly in the provided new HTML, so keep it for consistency */
+        /* .close-menu-btn would be replaced by navTrigger.active state */
+        .close-menu-btn { /* This style is for the "x" in the old implementation, not used in new one */
+            display: none;
+        }
+
+
+        /* Affix class for scrolled state */
+        .affix {
+            padding: 0;
+            background-color: #111; /* Dark background on scroll */
+        }
+
+        /* --- END NEW NAVBAR STYLES --- */
+
+
+        /* Hero Section */
+        #hero {
+            min-height: 100vh; /* Full viewport height */
+            display: flex;
+            flex-direction: column; /* Stack main title and intro */
+            justify-content: center; /* Vertically center content */
+            align-items: flex-start; /* Align items to the left */
+            padding-top: 100px; /* Account for fixed header */
+            position: relative; /* Allows content to be above the global canvas */
+        }
+
+        /* No need for .hero-content-container anymore as canvas is global */
+
+
+        #hero .hero-main-title h1 {
+            margin-bottom: 50px; /* Space between title and intro block */
+        }
+
+        #hero .hero-intro {
+            display: flex;
+            gap: 30px; /* Space between "HI! I'M RAHUL..." and the paragraph block */
+            align-items: flex-start; /* Align items at the top */
+        }
+
+        #hero .hero-intro h2 {
+            font-size: 2rem; /* Adjust as needed */
+            line-height: 1.3;
+            flex-basis: 40%; /* Give it some defined width */
+        }
+
+        #hero .hero-intro-details {
+            flex-basis: 55%; /* Remaining width */
+        }
+
+        #hero .hero-intro-details p {
+            margin-bottom: 15px;
+        }
+
+        .cta-link {
+            display: inline-block;
+            margin-top: 10px;
+            font-weight: bold;
+        }
+
+
+        /* Possibilities / Tech Stack Section */
+        #possibilities {
+            text-align: center;
+        }
+
+        #possibilities h2 {
+            margin-bottom: 40px;
+        }
+
+        .tech-stack {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px; /* Space between icons */
+            margin-bottom: 30px;
+        }
+
+        .tech-icon {
+            font-size: 2rem; /* Placeholder size, adjust for actual icons */
+            padding: 15px;
+            border-radius: 50%; /* Circular background */
+            background-color: #2a2a2a; /* Darker gray for icons */
+            min-width: 60px; /* Ensure consistent size */
+            min-height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer; /* Indicate clickable */
+            border: 2px solid transparent; /* Added for hover effect */
+            transition: background-color 0.3s, transform 0.2s, border-color 0.3s; /* Added border-color transition */
+        }
+
+        .tech-icon:hover {
+            transform: translateY(-3px); /* Slight lift on hover */
+            border-color: #f0db4f; /* Yellow outline on hover */
+        }
+
+        .tech-icon.main-tech {
+            background-color: #f0db4f; /* JS yellow for emphasis */
+            color: #323330;
+            font-size: 2.5rem;
+            padding: 20px;
+            min-width: 80px;
+            min-height: 80px;
+            /* Add subtle shadow or glow effect as in image */
+            box-shadow: 0 0 15px rgba(240, 219, 79, 0.5);
+        }
+
+        /* Active skill styling */
+        .tech-icon.active {
+            background-color: #f0db4f; /* Yellow background when active */
+            color: #323330; /* Dark text for readability on yellow background */
+            border: 2px solid #f0db4f; /* Ensure outline matches background when active */
+            box-shadow: 0 0 20px rgba(240, 219, 79, 0.8);
+            transform: scale(1.05);
+        }
+
+        /* Specific styling for Java icon */
+        #java-icon.tech-icon:hover {
+            border-color: #FF0000; /* Red outline on hover for Java */
+        }
+
+        #java-icon.tech-icon.active {
+            background-color: #FF0000; /* Red background when active for Java */
+            color: white; /* White text for readability on red background */
+            border: 2px solid #FF0000; /* Ensure outline matches background when active */
+            box-shadow: 0 0 20px rgba(255, 0, 0, 0.8);
+        }
+
+        /* Specific styling for HTML icon */
+        #html-icon.tech-icon:hover {
+            border-color: #FFA500; /* Orange outline on hover for HTML */
+        }
+
+        #html-icon.tech-icon.active {
+            background-color: #FFA500; /* Orange background when active for HTML */
+            color: #333333; /* Dark text for readability on orange background */
+            border: 2px solid #FFA500; /* Ensure outline matches background when active */
+            box-shadow: 0 0 20px rgba(255, 165, 0, 0.8);
+        }
+
+        /* Specific styling for CSS icon */
+        #css-icon.tech-icon:hover {
+            border-color: #800080; /* Purple outline on hover for CSS */
+        }
+
+        #css-icon.tech-icon.active {
+            background-color: #800080; /* Purple background when active for CSS */
+            color: white; /* White text for readability on purple background */
+            border: 2px solid #800080; /* Ensure outline matches background when active */
+            box-shadow: 0 0 20px rgba(128, 0, 128, 0.8);
+        }
+
+        #skill-description {
+            max-width: 700px;
+            margin: 0 auto;
+            color: #cccccc;
+            min-height: 60px; /* To prevent layout shifts when text changes */
+            transition: opacity 0.3s ease-in-out;
+        }
+
+
+        /* Current Focus Section */
+        #current-focus {
+            display: flex;
+            gap: 40px; /* Space between the large text and details */
+            align-items: center; /* Vertically align items */
+        }
+
+        #current-focus .focus-text {
+            flex-basis: 50%;
+        }
+
+        #current-focus .focus-text h2 {
+            font-size: 3rem; /* Large text */
+            line-height: 1.2;
+        }
+
+        #current-focus .focus-details {
+            flex-basis: 50%;
+        }
+
+        #current-focus .focus-details p {
+            margin-bottom: 15px;
+        }
+
+        .companies-worked-with-label {
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #888888;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .company-logos {
+            display: flex;
+            gap: 15px; /* Space between company names/logos */
+            flex-wrap: wrap; /* Allow wrapping if many logos */
+        }
+
+        .company-logos span { /* Replace with <img> if using actual logos */
+            font-weight: bold;
+            color: #aaaaaa;
+        }
+
+
+        /* Work Section */
+        #work h2 {
+            text-align: center; /* As seen in "WORK" title */
+            margin-bottom: 40px;
+        }
+
+        .projects-grid {
+            display: flex; /* Use flexbox to stack the first card and the grid below it */
+            flex-direction: column;
+            gap: 30px; /* Gap between the first card and the secondary grid */
+        }
+
+        .project-card {
+            background-color: #1e1e1e; /* Slightly lighter than main bg */
+            padding: 25px;
+            border-radius: 8px;
+            transition: box-shadow 0.3s ease-in-out; /* Add transition for smooth effect */
+        }
+
+        /* Specific styling for the first project card (Speechify) */
+        #speechify-card {
+            min-height: 350px; /* Make it longer */
+        }
+
+        .project-card h3 {
+            font-size: 1.8rem;
+            margin-bottom: 10px;
+        }
+
+        .project-card p {
+            font-size: 0.9rem;
+            margin-bottom: 15px;
+            color: #bbbbbb;
+        }
+
+        .project-tags {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .project-tags span {
+            background-color: #333333;
+            color: #dddddd;
+            padding: 5px 10px;
+            border-radius: 4px;
+            font-size: 0.8rem;
+        }
+
+        .project-preview img {
+            border-radius: 4px;
+            /* Add styling for the preview images if needed */
+        }
+
+        /* New grid for the remaining 6 cards */
+        .secondary-projects-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); /* 3 columns for desktop */
+            gap: 30px;
+        }
+
+        /* Specific shadow colors for project cards */
+        .default-blue-shadow {
+            box-shadow: 0 5px 15px var(--shadow-color);
+        }
+        .default-blue-shadow:hover {
+            box-shadow: 0 5px 20px var(--shadow-color);
+        }
+
+        .subtle-gold-shadow {
+            box-shadow: 0 0 30px 5px rgba(255, 236, 64, 1); /* Brighter Gold with larger blur/spread */
+        }
+        .subtle-gold-shadow:hover {
+            box-shadow: 0 0 40px 8px rgba(255, 236, 64, 1); /* Even brighter on hover */
+        }
+
+        .cool-cyan-shadow {
+            box-shadow: 0 5px 15px rgba(0, 255, 255, 1);
+        }
+        .cool-cyan-shadow:hover {
+            box-shadow: 0 5px 20px rgba(0, 255, 255, 1);
+        }
+
+
+        /* Gallery / Memory Game Section */
+        #gallery {
+            text-align: center;
+        }
+
+        #gallery h2 {
+            margin-bottom: 10px;
+        }
+
+        .view-gallery-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            color: #aaaaaa;
+            font-size: 0.9rem;
+        }
+
+        .memory-game-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); /* Adjust card size */
+            gap: 15px;
+            max-width: 600px; /* Adjust as needed */
+            margin: 0 auto;
+        }
+
+        .game-card {
+            background-color: #2a2a2a;
+            height: 100px; /* Or use aspect-ratio */
+            border-radius: 8px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 2.5rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.3s;
+        }
+
+        .game-card:hover {
+            background-color: #333333;
+        }
+
+        /* Example: revealed card style (you'll toggle this with JS) */
+        .game-card.revealed {
+            background-color: #4CAF50; /* Or show an image */
+            color: white;
+            transform: rotateY(180deg); /* Flip effect */
+        }
+
+        /* Contact Section */
+        #contact {
+            text-align: center;
+            padding-bottom: 80px; /* More space at the bottom */
+        }
+
+        #contact h2 {
+            margin-bottom: 40px;
+        }
+
+        #contact form {
+            max-width: 600px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            padding: 30px;
+            background-color: #1e1e1e;
+            border-radius: 8px;
+        }
+
+        #contact form label {
+            text-align: left;
+            font-size: 0.9rem;
+            color: #cccccc;
+            margin-bottom: 5px;
+            display: block; /* Ensures label is on its own line */
+        }
+
+        #contact form input[type="text"],
+        #contact form input[type="email"],
+        #contact form textarea {
+            width: 100%;
+            padding: 12px;
+            background-color: #2a2a2a;
+            border: 1px solid #333333;
+            border-radius: 4px;
+            color: #ffffff;
+            font-size: 1rem;
+            outline: none;
+            transition: border-color 0.3s;
+        }
+
+        #contact form input[type="text"]:focus,
+        #contact form input[type="email"]:focus,
+        #contact form textarea:focus {
+            border-color: #f0db4f; /* Highlight on focus */
+        }
+
+        #contact form textarea {
+            resize: vertical; /* Allow vertical resizing */
+            min-height: 120px;
+        }
+
+        #contact form button {
+            background-color: #f0db4f;
+            color: #323330;
+            padding: 15px 25px;
+            border: none;
+            border-radius: 4px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s, transform 0.2s;
+            margin-top: 10px;
+        }
+
+        #contact form button:hover {
+            background-color: #e0cc3d;
+            transform: translateY(-2px);
+        }
+
+        #contact-message {
+            margin-top: 20px;
+            font-size: 1rem;
+            color: #4CAF50; /* Green for success */
+            display: none; /* Hidden by default */
+        }
+
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 30px 20px;
+            border-top: 1px solid #2a2a2a; /* Subtle separator */
+            font-size: 0.9rem;
+            color: #888888;
+        }
+
+
+        /* --- Responsiveness --- */
+        @media screen and (max-width: 768px) {
+            .nav .main_list {
+                width: 100%;
+                height: 0;
+                overflow: hidden;
+                position: fixed; /* Changed to fixed for side panel */
+                top: 0;
+                right: 0; /* Align to right */
+                bottom: 0;
+                background-color: #121212; /* Changed background color to match body */
+                flex-direction: column;
+                padding: 60px 20px 20px;
+                box-shadow: -5px 0 15px rgba(0,0,0,0.5);
+                z-index: 998; /* Lower than navTrigger, higher than content */
+                display: flex; /* Ensure it's flex column when open */
+                align-items: flex-start;
+                gap: 15px;
+                transform: translateX(100%); /* Start off-screen to the right */
+                transition: transform 0.4s ease-in-out; /* Smooth slide transition */
+            }
+            .nav .main_list.show_list {
+                height: 100vh; /* Full height */
+                transform: translateX(0); /* Slide into view */
+            }
+            .nav .main_list ul {
+                flex-direction: column;
+                width: 100%;
+                height: auto; /* Adjusted to auto for content */
+                right: 0;
+                left: 0;
+                bottom: 0;
+                background-color: transparent; /* Inner list background should be transparent */
+            }
+            .nav .main_list ul li {
+                width: 100%;
+                text-align: right; /* Align text to right as per provided */
+                padding-right: 0;
+            }
+            .nav .main_list ul li a {
+                text-align: right; /* Aligned to right */
+                width: 100%;
+                font-size: 2.4rem; /* Adjusted font size for side menu */
+                padding: 10px 0;
+                border-bottom: 1px solid rgba(255, 255, 255, 0.2); /* Subtle separator */
+            }
+            .nav .main_list ul li:last-child a {
+                border-bottom: none;
+            }
+
+            .navTrigger {
+                display: flex; /* Show hamburger */
+            }
+            .nav div.logo {
+                margin-left: 0; /* Remove extra margin if container has padding */
+            }
+            h1 { font-size: 3rem; }
+            h2 { font-size: 2rem; }
+            .projects-grid {
+                /* No change needed here, flex column already handles stacking */
+            }
+            .memory-game-grid {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+            }
+            .game-card {
+                height: 80px;
+                font-size: 2rem;
+            }
+            #contact form {
+                padding: 20px;
+            }
+            /* Adjust secondary projects grid for smaller screens */
+            .secondary-projects-grid {
+                grid-template-columns: 1fr; /* 1 column on very small screens */
+            }
+        }
+
+        /* Hamburger animation */
+        .navTrigger i:nth-child(1) {
+            animation: outT 0.8s backwards;
+            animation-direction: reverse;
+        }
+
+        .navTrigger i:nth-child(2) {
+            margin: 5px 0;
+            animation: outM 0.8s backwards;
+            animation-direction: reverse;
+        }
+
+        .navTrigger i:nth-child(3) {
+            animation: outBtm 0.8s backwards;
+            animation-direction: reverse;
+        }
+
+        .navTrigger.active i:nth-child(1) {
+            animation: inT 0.8s forwards;
+        }
+
+        .navTrigger.active i:nth-child(2) {
+            animation: inM 0.8s forwards;
+        }
+
+        .navTrigger.active i:nth-child(3) {
+            animation: inBtm 0.8s forwards;
+        }
+
+        @keyframes inM {
+            50% { transform: rotate(0deg); }
+            100% { transform: rotate(45deg); }
+        }
+
+        @keyframes outM {
+            50% { transform: rotate(0deg); }
+            100% { transform: rotate(45deg); }
+        }
+
+        @keyframes inT {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(9px) rotate(0deg); }
+            100% { transform: translateY(9px) rotate(135deg); }
+        }
+
+        @keyframes outT {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(9px) rotate(0deg); }
+            100% { transform: translateY(9px) rotate(135deg); }
+        }
+
+        @keyframes inBtm {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-9px) rotate(0deg); }
+            100% { transform: translateY(-9px) rotate(135deg); }
+        }
+
+        @keyframes outBtm {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-9px) rotate(0deg); }
+            100% { transform: translateY(-9px) rotate(135deg); }
+        }
+        /* End Hamburger animation */
+
+
+        @media (max-width: 992px) and (min-width: 769px) {
+            #hero .hero-intro {
+                flex-direction: column; /* Stack elements on smaller screens */
+            }
+            #current-focus {
+                flex-direction: column;
+                text-align: center;
+            }
+            #current-focus .focus-text h2, #hero .hero-intro h2 {
+                text-align: center;
+                margin-bottom: 20px;
+            }
+            .secondary-projects-grid {
+                grid-template-columns: repeat(2, 1fr); /* 2 columns for tablets */
+            }
+        }
+
+        @media (max-width: 480px) {
+            h1 { font-size: 2.5rem; }
+            h2 { font-size: 1.8rem; }
+            section { padding: 40px 15px; }
+
+            .tech-icon {
+                font-size: 1.5rem;
+                padding: 10px;
+                min-width: 50px;
+                min-height: 50px;
+            }
+            .tech-icon.main-tech {
+                font-size: 2rem;
+                padding: 15px;
+                min-width: 70px;
+                min-height: 70px;
+            }
+            /* Further adjustments for speechify card if needed for smaller height */
+            #speechify-card {
+                min-height: 250px; /* Adjust height for very small screens */
+            }
+        }
+
+        /* Added content styles */
+        .myH2 {
+            text-align:center;
+            font-size: 4rem;
+            color: #ffffff; /* Ensure color is white */
+            margin-top: 50px;
+        }
+        .myP {
+            text-align: justify;
+            padding-left:15%;
+            padding-right:15%;
+            font-size: 20px;
+            color: #cccccc; /* Ensure color is light grey */
+        }
+        @media all and (max-width:700px){
+            .myP {
+                padding:2%;
+            }
+        }
     </style>
 </head>
 <body>
-    <header>
-        <nav>
+    <canvas id="threeJsCanvas"></canvas> <!-- Canvas moved to be a global background -->
+    <nav class="nav">
+        <div class="container">
             <div class="logo">
-                HP
+                <a href="#">HP</a>
             </div>
-            <ul>
-                <li><a href="about.html">About</a></li>
-                <li><a href="#posts">Posts</a></li>
-                <li><a href="#gallery">Gallery</a></li>
-                <li><a href="#uses">Uses</a></li>
-                <li><a href="#work">Work</a></li>
-                <li><a href="#contact">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
+            <div id="mainListDiv" class="main_list">
+                <ul class="navlinks">
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="#posts">Posts</a></li>
+                    <li><a href="#gallery">Gallery</a></li>
+                    <li><a href="#uses">Uses</a></li>
+                    <li><a href="#work">Work</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </div>
+            <span class="navTrigger">
+                <i></i>
+                <i></i>
+                <i></i>
+            </span>
+        </div>
+    </nav>
 
     <main>
         <section id="hero">
+            <!-- No canvas here anymore -->
             <div class="hero-main-title">
                 <h1>TURNING<br>IDEAS INTO<br>REALITY</h1>
             </div>
@@ -38,18 +861,19 @@
                 <div class="hero-intro-details">
                     <p>I'm a senior frontend engineer based from New Jersey, specializing in building pixel-perfect, engaging, and accessible digital experiences.</p>
                     <p>As a passionate engineer and also a total nerd, I enjoy building software in the sweet spot where design, problem-solving, and engineering meet -- creating things that not only look good but are also easy to use and well-built under the hood.</p>
-                    <a href="#about-me" class="cta-link">MORE ABOUT ME &rarr;</a>
+                    <a href="about.html" class="cta-link">MORE ABOUT ME &rarr;</a>
                 </div>
             </div>
         </section>
+
 
         <section id="possibilities">
             <h2>ONE UNIVERSE. INFINITE POSSIBILITIES.</h2>
             <div class="tech-stack">
                 <span class="tech-icon" data-skill="javascript">JavaScript</span>
-                <span class="tech-icon" data-skill="java">Java</span>
-                <span class="tech-icon" data-skill="html">HTML</span>
-                <span class="tech-icon" data-skill="css">CSS</span>
+                <span class="tech-icon" data-skill="java" id="java-icon">Java</span>
+                <span class="tech-icon" data-skill="html" id="html-icon">HTML</span>
+                <span class="tech-icon" data-skill="css" id="css-icon">CSS</span>
             </div>
             <p id="skill-description">Click on a skill above to learn more about my proficiency in it!</p>
         </section>
@@ -74,7 +898,7 @@
         <section id="work">
             <h2>WORK</h2>
             <div class="projects-grid">
-                <div class="project-card">
+                <div class="project-card subtle-gold-shadow" id="speechify-card">
                     <h3>Speechify</h3>
                     <p>Helping Speechify reach millions of users across the globe. Involved in everything related to Top of Funnel (TOFU). The website created using Next.js and powered by a headless CMS with complete support for internationalization & AI Translations. It also acts as a playground for the users to try out what Speechify can do.</p>
                     <div class="project-tags">
@@ -89,18 +913,83 @@
                         <img src="https://placehold.co/400x250/333333/FFFFFF?text=Speechify+Preview" alt="Speechify project preview">
                     </div>
                 </div>
-                <div class="project-card">
-                    <h3>Procol</h3>
-                    <p>In addition to contributing to Procol's core product development, I led the development of Procol's marketing website from scratch. The website is statically generated using Gatsby and seamlessly integrated with a headless content management system, which empowers content owners to effortlessly update website content independently.</p>
-                     <div class="project-tags">
-                        <span>Gatsby</span>
-                        <span>React</span>
-                        <span>SCSS</span>
-                        <span>Contentful CMS</span>
-                        <span>GraphQL</span>
+                <div class="secondary-projects-grid">
+                    <div class="project-card default-blue-shadow">
+                        <h3>Procol</h3>
+                        <p>In addition to contributing to Procol's core product development, I led the development of Procol's marketing website from scratch. The website is statically generated using Gatsby and seamlessly integrated with a headless content management system, which empowers content owners to effortlessly update website content independently.</p>
+                         <div class="project-tags">
+                            <span>Gatsby</span>
+                            <span>React</span>
+                            <span>SCSS</span>
+                            <span>Contentful CMS</span>
+                            <span>GraphQL</span>
+                        </div>
+                        <div class="project-preview">
+                            <img src="https://placehold.co/400x250/333333/FFFFFF?text=Procol+Preview" alt="Procol project preview">
+                        </div>
                     </div>
-                    <div class="project-preview">
-                        <img src="https://placehold.co/400x250/333333/FFFFFF?text=Procol+Preview" alt="Procol project preview">
+                    <div class="project-card default-blue-shadow">
+                        <h3>Project Three</h3>
+                        <p>This is a placeholder description for project three. It demonstrates a project card with various technologies and a preview image.</p>
+                        <div class="project-tags">
+                            <span>Vue.js</span>
+                            <span>Node.js</span>
+                            <span>Express</span>
+                            <span>MongoDB</span>
+                        </div>
+                        <div class="project-preview">
+                            <img src="https://placehold.co/400x250/333333/FFFFFF?text=Project+3+Preview" alt="Project Three preview">
+                        </div>
+                    </div>
+                    <div class="project-card default-blue-shadow">
+                        <h3>Project Four</h3>
+                        <p>This project involved building a robust backend API using Python and Flask, focusing on data processing and integration with external services.</p>
+                        <div class="project-tags">
+                            <span>Python</span>
+                            <span>Flask</span>
+                            <span>PostgreSQL</span>
+                            <span>AWS Lambda</span>
+                        </div>
+                        <div class="project-preview">
+                            <img src="https://placehold.co/400x250/333333/FFFFFF?text=Project+4+Preview" alt="Project Four preview">
+                        </div>
+                    </div>
+                    <div class="project-card cool-cyan-shadow">
+                        <h3>Project Five</h3>
+                        <p>A mobile-first web application developed with a focus on accessibility and performance, utilizing modern JavaScript frameworks.</p>
+                        <div class="project-tags">
+                            <span>React Native</span>
+                            <span>Firebase</span>
+                            <span>Redux</span>
+                        </div>
+                        <div class="project-preview">
+                            <img src="https://placehold.co/400x250/333333/FFFFFF?text=Project+5+Preview" alt="Project Five preview">
+                        </div>
+                    </div>
+                    <div class="project-card cool-cyan-shadow">
+                        <h3>Project Six</h3>
+                        <p>Designed and implemented a scalable microservices architecture using Docker and Kubernetes, ensuring high availability and fault tolerance.</p>
+                        <div class="project-tags">
+                            <span>Docker</span>
+                            <span>Kubernetes</span>
+                            <span>Go</span>
+                            <span>GCP</span>
+                        </div>
+                        <div class="project-preview">
+                            <img src="https://placehold.co/400x250/333333/FFFFFF?text=Project+6+Preview" alt="Project Six preview">
+                        </div>
+                    </div>
+                    <div class="project-card cool-cyan-shadow">
+                        <h3>Project Seven</h3>
+                        <p>Developed interactive data visualizations using D3.js, providing insights from complex datasets in a user-friendly format.</p>
+                        <div class="project-tags">
+                            <span>D3.js</span>
+                            <span>SVG</span>
+                            <span>Data Viz</span>
+                        </div>
+                        <div class="project-preview">
+                            <img src="https://placehold.co/400x250/333333/FFFFFF?text=Project+7+Preview" alt="Project Seven preview">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -138,7 +1027,7 @@
 
                 <button type="submit">Send Message</button>
             </form>
-            <p id="contact-message">Thank you for your message! I'll get back to you soon.</p>
+            <p id="contact-message">Thank Thank you for your message! I'll get back to you soon.</p>
         </section>
     </main>
 
@@ -146,8 +1035,303 @@
         <p>&copy; <span id="current-year"></span> Hardav. All rights reserved.</p>
     </footer>
 
-    <script src="script.js">
-        
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+
+            // Smooth scrolling for internal links
+            const navLinks = document.querySelectorAll('.navlinks a'); // Select new navlinks
+            navLinks.forEach(link => {
+                link.addEventListener('click', function(e) {
+                    const href = this.getAttribute('href');
+                    if (href.startsWith('#') && this.hostname === location.hostname && this.pathname === location.pathname) {
+                        e.preventDefault();
+                        const targetId = href.substring(1);
+                        const targetElement = document.getElementById(targetId);
+                        if (targetElement) {
+                            targetElement.scrollIntoView({ behavior: 'smooth' });
+                            // Close nav menu on link click for mobile
+                            const mainListDiv = document.getElementById('mainListDiv');
+                            const navTrigger = document.querySelector('.navTrigger');
+                            if (mainListDiv.classList.contains('show_list')) {
+                                mainListDiv.classList.remove('show_list');
+                                navTrigger.classList.remove('active');
+                                document.body.style.overflow = ''; // Restore scrolling
+                            }
+                        }
+                    } else if (href === "about.html") {
+                        // For about.html, allow normal navigation
+                        return;
+                    }
+                });
+            });
+
+            // Dynamic year in footer
+            const currentYearSpan = document.getElementById('current-year');
+            if (currentYearSpan) {
+                currentYearSpan.textContent = new Date().getFullYear();
+            }
+
+            // --- Memory Lane Game Logic ---
+            const gameGrid = document.querySelector('.memory-game-grid');
+            const gameCardsElements = document.querySelectorAll('.game-card'); // If hardcoded
+
+            const cardValues = ['A', 'A', 'B', 'B', 'C', 'C', 'D', 'D']; // Example pairs
+            let flippedCards = [];
+            let matchedPairs = 0;
+
+            function shuffle(array) {
+                array.sort(() => Math.random() - 0.5);
+            }
+
+            function createBoard() {
+                shuffle(cardValues);
+                gameCardsElements.forEach((card, index) => {
+                    if (cardValues[index]) {
+                        card.dataset.value = cardValues[index];
+                        card.addEventListener('click', handleCardClick);
+                    } else {
+                        card.style.visibility = 'hidden';
+                    }
+                });
+            }
+
+            function handleCardClick(event) {
+                const clickedCard = event.target;
+
+                if (clickedCard.classList.contains('revealed') || flippedCards.length === 2) {
+                    return;
+                }
+
+                clickedCard.textContent = clickedCard.dataset.value;
+                clickedCard.classList.add('revealed');
+                flippedCards.push(clickedCard);
+
+                if (flippedCards.length === 2) {
+                    checkForMatch();
+                }
+            }
+
+            function checkForMatch() {
+                const [card1, card2] = flippedCards;
+                if (card1.dataset.value === card2.dataset.value) {
+                    card1.removeEventListener('click', handleCardClick);
+                    card2.removeEventListener('click', handleCardClick);
+                    matchedPairs++;
+                    flippedCards = [];
+                    if (matchedPairs === cardValues.length / 2) {
+                        console.log('Congratulations! You found all pairs!');
+                    }
+                } else {
+                    setTimeout(() => {
+                        card1.textContent = '?';
+                        card1.classList.remove('revealed');
+                        card2.textContent = '?';
+                        card2.classList.remove('revealed');
+                        flippedCards = [];
+                    }, 1000);
+                }
+            }
+
+            if (gameGrid && gameCardsElements.length > 0) {
+                createBoard();
+            }
+
+
+            // --- Intersection Observer for Animations (Optional) ---
+            const sections = document.querySelectorAll('section');
+            const options = {
+                root: null,
+                threshold: 0.1,
+                rootMargin: "0px"
+            };
+
+            const observer = new IntersectionObserver((entries, observer) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('is-visible');
+                    }
+                });
+            }, options);
+
+            sections.forEach(section => {
+                observer.observe(section);
+            });
+
+
+            // --- Contact Form Logic ---
+            const contactForm = document.getElementById('contact-form');
+            const contactMessage = document.getElementById('contact-message');
+
+            if (contactForm) {
+                contactForm.addEventListener('submit', function(e) {
+                    e.preventDefault();
+
+                    const name = document.getElementById('name').value;
+                    const email = document.getElementById('email').value;
+                    const subject = document.getElementById('subject').value;
+                    const message = document.getElementById('message').value;
+
+                    console.log('Contact Form Submitted:');
+                    console.log('Name:', name);
+                    console.log('Email:', email);
+                    console.log('Subject:', subject);
+                    console.log('Message:', message);
+
+                    contactMessage.style.display = 'block';
+                    contactMessage.style.color = '#4CAF50';
+
+                    contactForm.reset();
+
+                    setTimeout(() => {
+                        contactMessage.style.display = 'none';
+                    }, 5000);
+                });
+            }
+
+            // --- Skill Description Logic ---
+            const skillIcons = document.querySelectorAll('.tech-icon');
+            const skillDescriptionElement = document.getElementById('skill-description');
+
+            const skillProficiencies = {
+                javascript: "I have extensive experience with JavaScript, including ES6+, asynchronous programming, and modern frameworks like React. I've built dynamic and interactive web applications, focusing on performance and user experience.",
+                java: "My Java expertise covers backend development, object-oriented design, and enterprise-level applications. I'm proficient in using Java for robust and scalable solutions.",
+                html: "I possess strong HTML5 skills, creating well-structured, semantic, and accessible web content. I ensure cross-browser compatibility and adherence to web standards.",
+                css: "I excel in CSS3, utilizing advanced techniques like Flexbox, Grid, and responsive design principles to craft visually appealing and adaptive user interfaces. I'm also familiar with preprocessors like SCSS."
+            };
+
+            function updateSkillDescription(skill) {
+                if (skillProficiencies[skill]) {
+                    skillDescriptionElement.style.opacity = 0;
+                    setTimeout(() => {
+                        skillDescriptionElement.textContent = skillProficiencies[skill];
+                        skillDescriptionElement.style.opacity = 1;
+                    }, 300);
+                } else {
+                    skillDescriptionElement.textContent = "Click on a skill above to learn more about my proficiency in it!";
+                    skillDescriptionElement.style.opacity = 1;
+                }
+            }
+
+            skillIcons.forEach(icon => {
+                icon.addEventListener('click', () => {
+                    skillIcons.forEach(i => i.classList.remove('active'));
+                    icon.classList.add('active');
+                    const skill = icon.dataset.skill;
+                    updateSkillDescription(skill);
+                });
+            });
+
+            // --- New Navbar Logic (Converted from jQuery) ---
+            const nav = document.querySelector('.nav');
+            const mainListDiv = document.getElementById('mainListDiv');
+            const navTrigger = document.querySelector('.navTrigger');
+
+            // Scroll event for affix class
+            window.addEventListener('scroll', () => {
+                if (document.documentElement.scrollTop > 50) {
+                    nav.classList.add('affix');
+                } else {
+                    nav.classList.remove('affix');
+                }
+            });
+
+            // Nav Trigger click event for mobile menu
+            navTrigger.addEventListener('click', () => {
+                navTrigger.classList.toggle('active');
+                mainListDiv.classList.toggle('show_list');
+                // Manage body overflow when side nav is open/closed
+                if (mainListDiv.classList.contains('show_list')) {
+                    document.body.style.overflow = 'hidden';
+                } else {
+                    document.body.style.overflow = '';
+                }
+            });
+
+            // --- Three.js Animation Logic ---
+            let scene, camera, renderer, particles;
+            const canvasElement = document.getElementById('threeJsCanvas'); // Referencing the global canvas
+
+            function initThreeJS() {
+                // Scene setup
+                scene = new THREE.Scene();
+
+                // Camera setup - use window dimensions
+                camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+                camera.position.z = 5;
+
+                // Renderer setup - use window dimensions
+                renderer = new THREE.WebGLRenderer({ canvas: canvasElement, antialias: true, alpha: true });
+                renderer.setSize(window.innerWidth, window.innerHeight);
+                renderer.setPixelRatio(window.devicePixelRatio);
+
+                // Particles
+                const particleCount = 3000; // Reduced count
+                const geometry = new THREE.BufferGeometry();
+                const positions = [];
+                const colors = [];
+
+                for (let i = 0; i < particleCount; i++) {
+                    // Position particles randomly within a sphere
+                    const x = (Math.random() - 0.5) * 20;
+                    const y = (Math.random() - 0.5) * 20;
+                    const z = (Math.random() - 0.5) * 20;
+                    positions.push(x, y, z);
+
+                    // Color: vary brightness slightly from blue to cyan, matching accent color
+                    const color = new THREE.Color();
+                    // Reduced saturation (0.8) and lower base luminosity (0.3) with smaller range (0.2)
+                    color.setHSL(0.55 + Math.random() * 0.1, 0.8, 0.3 + Math.random() * 0.2);
+                    colors.push(color.r, color.g, color.b);
+                }
+
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute(positions, 3));
+                geometry.setAttribute('color', new THREE.Float32BufferAttribute(colors, 3));
+
+                // Material (using PointsMaterial for simplicity, can upgrade to ShaderMaterial for more glow)
+                const material = new THREE.PointsMaterial({
+                    size: 0.015, // Reduced size
+                    vertexColors: true,
+                    transparent: true,
+                    opacity: 0.8,
+                    blending: THREE.AdditiveBlending // For glowing effect
+                });
+
+                particles = new THREE.Points(geometry, material);
+                scene.add(particles);
+
+                // Handle window resizing - update camera aspect and renderer size
+                window.addEventListener('resize', onWindowResize, false);
+            }
+
+            function onWindowResize() {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            }
+
+            function animateThreeJS() {
+                requestAnimationFrame(animateThreeJS);
+
+                // Simple particle animation (reduced speeds)
+                particles.rotation.x += 0.0002;
+                particles.rotation.y += 0.0004;
+                particles.position.z += 0.002; // Slower forward movement
+                if (particles.position.z > 5) {
+                    particles.position.z = -5; // Reset particles to create continuous flow
+                }
+
+                renderer.render(scene, camera);
+            }
+
+            // Initialize and animate Three.js when the window loads
+            window.onload = function () {
+                if (canvasElement) {
+                    initThreeJS();
+                    animateThreeJS();
+                }
+            }
+        });
     </script>
 </body>
 </html>
