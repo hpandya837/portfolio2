@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>MDES: DevZone API Updates</title>
+    <link>https://developer.mastercard.com</link>
+    <description>Latest API updates, releases, and announcements</description>
+    <language>en-us</language>
+
+    <item>
+      <title>v2.3 Released – Tokenization Enhancement</title>
+      <link>https://developer.yourcompany.com/release-notes/v2-3</link>
+      <description>
+        Added support for new authentication profile and performance improvements.
+      </description>
+      <pubDate>Wed, 24 Jun 2026 14:22:00 GMT</pubDate>
+      <guid>v2.3-release</guid>
+    </item>
+
+    <item>
+      <title>Deprecation Notice – v1 APIs</title>
+      <link>https://developer.yourcompany.com/deprecation/v1</link>
+      <description>
+        v1 APIs will be sunset by Dec 2026. Migration guide available.
+      </description>
+      <pubDate>Tue, 20 Jun 2026 10:00:00 GMT</pubDate>
+      <guid>v1-deprecation</guid>
+    </item>
+
+    <item>
+      <title>Deprecation Notice – v3 APIs</title>
+      <link>https://developer.yourcompany.com/deprecation/v1</link>
+      <description>
+        v1 APIs will be sunset by Dec 2026. Migration guide available.
+      </description>
+      <pubDate>Tue, 30 Jun 2026 14:45:00 GMT</pubDate>
+      <guid>v1-deprecation</guid>
+    </item>
+
+    <item>
+      <title>Deprecation Notice – v4 APIs</title>
+      <link>https://developer.yourcompany.com/deprecation/v1</link>
+      <description>
+        v1 APIs will be sunset by Dec 2026. Migration guide available.
+      </description>
+      <PublishDate>Tue, 30 Jun 2026 15:40:00 GMT</PublishDate>
+      <guid>v1-deprecation</guid>
+    </item>
+
+  </channel>
+</rss>
